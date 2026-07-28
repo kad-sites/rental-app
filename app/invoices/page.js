@@ -98,14 +98,10 @@ export default function InvoicesPage() {
     const baseUrl = window.location.origin;
     let payUrl = `${baseUrl}/pay/${inv.id}`;
     
-    const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'your-upi-id-here@bank';
-    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=Landlord&am=${inv.amountDue}&cu=INR`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`;
-    
     const billType = inv.type === 'EB' ? 'electricity bill' : 'rent';
     const rawAmountStr = Number(inv.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2});
     const hiddenAmount = rawAmountStr.split('').join('\u200B'); // Defeat WhatsApp Pay regex
-    const text = `Hello ${inv.tenant?.name},\n\nYour ${billType} for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nOr scan the QR code preview below:\n${qrUrl}\n\nThank you!`;
+    const text = `Hello ${inv.tenant?.name},\n\nYour ${billType} for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
     
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
     
@@ -301,8 +297,8 @@ export default function InvoicesPage() {
           <div className="glass-panel animate-fade-in" style={{maxWidth: '500px', width: '90%', position: 'relative'}}>
             <button onClick={() => setPreviewInvoice(null)} style={{position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.5rem', cursor: 'pointer', padding: '0'}}>&times;</button>
             <h2 style={{marginTop: '0'}}>Message Preview</h2>
-            <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', whiteSpace: 'pre-wrap', border: '1px solid var(--border-color)', wordBreak: 'break-all'}}>
-              {`Hello ${previewInvoice.tenant?.name},\n\nYour ${previewInvoice.type === 'EB' ? 'electricity bill' : 'rent'} for this month is ₹${Number(previewInvoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}/pay/${previewInvoice.id}\n\nOr scan the QR code preview below:\nhttps://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(`upi://pay?pa=${process.env.NEXT_PUBLIC_UPI_ID || 'your-upi-id-here@bank'}&pn=Landlord&am=${previewInvoice.amountDue}&cu=INR`)}\n\nThank you!`}
+            <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', whiteSpace: 'pre-wrap', border: '1px solid var(--border-color)'}}>
+              {`Hello ${previewInvoice.tenant?.name},\n\nYour ${previewInvoice.type === 'EB' ? 'electricity bill' : 'rent'} for this month is ₹${Number(previewInvoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}/pay/${previewInvoice.id}\n\nThank you!`}
             </div>
             <div style={{textAlign: 'center'}}>
               <a href={`/pay/${previewInvoice.id}`} target="_blank" className="btn btn-success" style={{textDecoration: 'none', display: 'inline-block', padding: '0.5rem 1rem'}}>
