@@ -22,6 +22,12 @@ export default function TenantsPage() {
   const [ebGenerating, setEbGenerating] = useState(false)
   const [selectedClient, setSelectedClient] = useState(null)
   const [roommateCount, setRoommateCount] = useState(0)
+  
+  const [vacateModalOpen, setVacateModalOpen] = useState(false)
+  const [selectedVacateTenant, setSelectedVacateTenant] = useState(null)
+  const [customDeductions, setCustomDeductions] = useState('')
+  const [customDeductionReason, setCustomDeductionReason] = useState('')
+  const [vacateLoading, setVacateLoading] = useState(false)
 
   useEffect(() => {
     fetchTenants()
@@ -181,15 +187,64 @@ export default function TenantsPage() {
   }
 
   const handleToggleActive = async (tenantId, currentStatus) => {
-    if (!confirm(`Are you sure you want to mark this tenant as ${currentStatus ? 'Vacated' : 'Active'}?`)) return;
+    if (currentStatus) return; // Vacating is handled by openVacateModal
+    if (!confirm(`Are you sure you want to restore this tenant?`)) return;
     
     const res = await fetch('/api/tenants', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: tenantId, isActive: !currentStatus })
+      body: JSON.stringify({ id: tenantId, isActive: true })
     })
     if (res.ok) {
       fetchTenants()
+    }
+  }
+
+  const openVacateModal = (tenant) => {
+    setSelectedVacateTenant(tenant);
+    setCustomDeductions('');
+    setCustomDeductionReason('');
+    setVacateModalOpen(true);
+  }
+
+  const handleConfirmVacate = async () => {
+    if (!selectedVacateTenant) return;
+    setVacateLoading(true);
+    
+    const res = await fetch(`/api/tenants/${selectedVacateTenant.id}/vacate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customDeductions: parseFloat(customDeductions) || 0,
+        customDeductionReason: customDeductionReason
+      })
+    });
+    
+    if (res.ok) {
+      setVacateModalOpen(false);
+      setVacateLoading(false);
+      fetchTenants();
+      
+      const pendingDues = selectedVacateTenant.invoices?.filter(i => i.status === 'PENDING' || i.status === 'VERIFYING').reduce((sum, inv) => sum + inv.amountDue, 0) || 0;
+      const totalDeductions = pendingDues + (parseFloat(customDeductions) || 0);
+      const finalRefund = selectedVacateTenant.deposit - totalDeductions;
+      
+      let phone = selectedVacateTenant.phone || '';
+      if (!phone.startsWith('91') && !phone.startsWith('+')) phone = '91' + phone;
+      phone = phone.replace('+', '');
+      
+      let text = `Hello ${selectedVacateTenant.name},\n\nYour account has been successfully settled and you have been marked as vacated.\n\n*Settlement Details:*\n- Initial Deposit: ₹${selectedVacateTenant.deposit.toLocaleString('en-IN', {minimumFractionDigits: 2})}\n- Pending Rent/EB Dues: ₹${pendingDues.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      
+      if (parseFloat(customDeductions) > 0) {
+        text += `\n- Other Deductions: ₹${parseFloat(customDeductions).toLocaleString('en-IN', {minimumFractionDigits: 2})} (${customDeductionReason || 'Damages/Cleaning'})`;
+      }
+      
+      text += `\n\n*Final Refund Amount: ₹${finalRefund.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nThank you for staying with us!`;
+      
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+    } else {
+      setVacateLoading(false);
+      alert('Failed to vacate tenant.');
     }
   }
 
@@ -788,7 +843,7 @@ export default function TenantsPage() {
                           </td>
                         </tr>
                         {groupedTenants[house].map(t => (
-                          <tr key={t.id}>
+                          <tr key={t.id} style={{opacity: t.isActive ? 1 : 0.6, backgroundColor: t.isActive ? 'transparent' : 'rgba(0,0,0,0.2)'}}>
                             <td data-label="Unit" style={{whiteSpace: 'nowrap'}}>
                               <div style={{fontWeight: '450', color: 'var(--text-primary)'}}>Unit {t.unitNo || '-'}</div>
                             </td>
@@ -936,6 +991,75 @@ export default function TenantsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      
+      {vacateModalOpen && selectedVacateTenant && (
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000}}>
+          <div className="glass-panel animate-fade-in" style={{maxWidth: '500px', width: '90%', position: 'relative'}}>
+            <button onClick={() => setVacateModalOpen(false)} style={{position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.5rem', cursor: 'pointer', padding: '0'}}>&times;</button>
+            <h2 style={{marginTop: '0'}}>Vacate Tenant: {selectedVacateTenant.name}</h2>
+            
+            <div style={{margin: '1.5rem 0'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
+                <span>Initial Deposit:</span>
+                <span style={{fontWeight: 'bold', color: 'var(--success-color)'}}>₹{selectedVacateTenant.deposit.toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+              </div>
+              
+              <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
+                <span>Pending Rent/EB Dues:</span>
+                <span style={{fontWeight: 'bold', color: 'var(--warning-color)'}}>
+                  - ₹{(selectedVacateTenant.invoices?.filter(i => i.status === 'PENDING' || i.status === 'VERIFYING').reduce((sum, inv) => sum + inv.amountDue, 0) || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}
+                </span>
+              </div>
+              
+              <div style={{marginBottom: '0.5rem'}}>
+                <label style={{display: 'block', marginBottom: '0.2rem', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Custom Deductions (e.g. Damages/Painting) (₹)</label>
+                <input 
+                  type="number" 
+                  className="input-field" 
+                  value={customDeductions}
+                  onChange={(e) => setCustomDeductions(e.target.value)}
+                  placeholder="0"
+                  style={{width: '100%', marginBottom: '0.5rem'}}
+                />
+                {parseFloat(customDeductions) > 0 && (
+                  <input 
+                    type="text" 
+                    className="input-field" 
+                    value={customDeductionReason}
+                    onChange={(e) => setCustomDeductionReason(e.target.value)}
+                    placeholder="Reason for deduction"
+                    style={{width: '100%'}}
+                  />
+                )}
+              </div>
+              
+              <hr style={{border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '1rem 0'}} />
+              
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold'}}>
+                <span>Final Refund:</span>
+                <span style={{color: (selectedVacateTenant.deposit - (selectedVacateTenant.invoices?.filter(i => i.status === 'PENDING' || i.status === 'VERIFYING').reduce((sum, inv) => sum + inv.amountDue, 0) || 0) - (parseFloat(customDeductions) || 0)) >= 0 ? 'var(--success-color)' : 'var(--warning-color)'}}>
+                  ₹{(selectedVacateTenant.deposit - (selectedVacateTenant.invoices?.filter(i => i.status === 'PENDING' || i.status === 'VERIFYING').reduce((sum, inv) => sum + inv.amountDue, 0) || 0) - (parseFloat(customDeductions) || 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}
+                </span>
+              </div>
+              <p style={{fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem', textAlign: 'center'}}>
+                Confirming will mark this tenant as vacated, mark all pending dues as PAID (settled from deposit), and generate a WhatsApp receipt.
+              </p>
+            </div>
+            
+            <div style={{display: 'flex', gap: '1rem', justifyContent: 'flex-end'}}>
+              <button className="btn btn-outline" onClick={() => setVacateModalOpen(false)}>Cancel</button>
+              <button 
+                className="btn btn-success" 
+                onClick={handleConfirmVacate}
+                disabled={vacateLoading}
+                style={{minWidth: '150px'}}
+              >
+                {vacateLoading ? 'Confirming...' : 'Confirm Vacate'}
+              </button>
+            </div>
           </div>
         </div>
       )}
