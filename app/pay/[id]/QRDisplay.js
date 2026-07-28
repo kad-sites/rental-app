@@ -1,6 +1,6 @@
 'use client'
 
-export default function QRDisplay({ qrUrl }) {
+export default function QRDisplay({ qrUrl, fileName = 'rent-qr.png' }) {
   const handleDownload = async (e) => {
     if (e) e.preventDefault();
     try {
@@ -11,7 +11,7 @@ export default function QRDisplay({ qrUrl }) {
       
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = 'rent-qr.png';
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

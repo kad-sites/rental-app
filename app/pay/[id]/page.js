@@ -25,6 +25,13 @@ export default async function PaymentPage({ params }) {
   const upiUrl = `upi://pay?pa=${UPI_ID}&pn=Landlord&tr=RENT${invoice.id}&mc=0000&mode=02&purpose=00&am=${invoice.amountDue}&cu=INR`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
 
+  // Generate a unique filename for the downloaded QR code
+  const rawTenantName = invoice.tenant?.name || 'Tenant';
+  const safeTenantName = rawTenantName.replace(/[^a-zA-Z0-9]/g, '');
+  const monthYear = new Date(invoice.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).replace(/\s+/g, '');
+  const billType = invoice.type === 'EB' ? 'EB' : 'Rent';
+  const downloadFileName = `QR_${billType}_${safeTenantName}_${monthYear}.png`;
+
   return (
     <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '1rem' }}>
       <div className="glass-panel animate-fade-in" style={{ maxWidth: '400px', width: '100%', textAlign: 'center', padding: '1.5rem 1rem' }}>
@@ -51,7 +58,7 @@ export default async function PaymentPage({ params }) {
           </div>
         ) : (
           <>
-            <QRDisplay qrUrl={qrUrl} />
+            <QRDisplay qrUrl={qrUrl} fileName={downloadFileName} />
 
             <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '8px', padding: '0.75rem', marginBottom: '1rem', textAlign: 'left', display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
               <div style={{ fontSize: '1.2rem', marginTop: '-2px' }}>💡</div>
