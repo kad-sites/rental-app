@@ -801,11 +801,11 @@ export default function TenantsPage() {
                                 {t.name}
                                 {t.invoices?.filter(i => new Date(i.dueDate) < new Date()).length > 0 && (
                                   <svg 
-                                    className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 3 ? 'bulb-red' : t.invoices.filter(i => new Date(i.dueDate) < new Date()).length === 2 ? 'bulb-orange' : 'bulb-yellow'} 
+                                    className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 3 ? 'overdue-alert-red' : t.invoices.filter(i => new Date(i.dueDate) < new Date()).length === 2 ? 'overdue-alert-orange' : 'overdue-alert-yellow'} 
                                     width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                                     style={{flexShrink: 0}}
                                   >
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm0 17.5c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2z"/>
+                                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
                                   </svg>
                                 )}
                               </span>
