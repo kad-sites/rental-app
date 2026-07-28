@@ -50,24 +50,8 @@ export default async function PaymentPage({ params }) {
           </div>
         ) : (
           <>
-            <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.5rem', textAlign: 'left' }}>
-              <h3 style={{ color: 'var(--warning-color)', fontSize: '1rem', margin: '0 0 0.75rem 0', fontWeight: 'bold' }}>How to Pay from your Phone:</h3>
-              <ol style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, paddingLeft: '1.25rem', lineHeight: '1.6' }}>
-                <li style={{ marginBottom: '0.5rem' }}><strong>Take a screenshot</strong> of the QR code below.</li>
-                <li style={{ marginBottom: '0.5rem' }}>Open <strong>GPay, PhonePe, or Paytm</strong>.</li>
-                <li style={{ marginBottom: '0.5rem' }}>Tap the <strong>QR Scanner</strong> icon.</li>
-                <li>Select the <strong>Screenshot</strong> from your gallery!</li>
-              </ol>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1rem', fontStyle: 'italic', opacity: 0.8 }}>
-                *Due to RBI security rules, UPI apps block automatic web links for rent payments to prevent scams. Scanning the QR from your gallery guarantees the exact amount is billed securely!
-              </p>
-            </div>
-            
-            <MarkPaidButton invoiceId={invoice.id} />
-
-            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', marginTop: '1rem' }}>
-              <p style={{ color: 'var(--text-primary)', marginBottom: '1rem', fontSize: '0.95rem', fontWeight: 'bold' }}>Scan to Pay</p>
-              <div style={{ background: 'white', padding: '1rem', borderRadius: '12px', display: 'inline-block', marginBottom: '1rem' }}>
+            <div style={{ padding: '1rem', background: 'white', borderRadius: '12px', display: 'inline-block', marginBottom: '1rem' }}>
+              <a href={qrUrl} download="rent-qr.png" target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none' }}>
                 <img 
                   src={qrUrl} 
                   alt="UPI QR Code" 
@@ -75,11 +59,28 @@ export default async function PaymentPage({ params }) {
                     display: 'block',
                     width: '200px', 
                     height: '200px', 
-                    margin: '0 auto' 
+                    margin: '0 auto',
+                    cursor: 'pointer'
                   }} 
+                  title="Click to download QR code"
                 />
-              </div>
+              </a>
             </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <a href={qrUrl} download="rent-qr.png" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'inline-block', padding: '0.6rem 1.2rem', fontSize: '0.9rem', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold' }}>
+                ⬇️ Download QR Code
+              </a>
+            </div>
+
+            <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+              <h3 style={{ color: 'var(--warning-color)', fontSize: '1rem', margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>How to Pay:</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: '0' }}>
+                Scan this QR from <strong>GPay, PhonePe, or any UPI app</strong> to pay rent. If you are on your phone, download the QR above and select it from your gallery in your UPI app's scanner!
+              </p>
+            </div>
+            
+            <MarkPaidButton invoiceId={invoice.id} />
           </>
         )}
       </div>
