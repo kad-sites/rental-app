@@ -22,8 +22,15 @@ export default async function PaymentPage({ params }) {
 
   // Read UPI ID from environment variables, fallback if missing
   const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'your-upi-id-here@bank';
-  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=Landlord&tr=RENT${invoice.id}&mc=0000&mode=02&purpose=00&am=${invoice.amountDue}&cu=INR`
+  
+  // Standard universal UPI link (used for QR code and iOS fallback)
+  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=Landlord&am=${invoice.amountDue}&cu=INR`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
+
+  // Explicit Android Intent URLs to bypass WhatsApp/Instagram WebView blocking
+  const phonePeIntent = `intent://pay?pa=${UPI_ID}&pn=Landlord&am=${invoice.amountDue}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end`;
+  const gpayIntent = `intent://pay?pa=${UPI_ID}&pn=Landlord&am=${invoice.amountDue}&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+  const paytmIntent = `intent://pay?pa=${UPI_ID}&pn=Landlord&am=${invoice.amountDue}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end`;
 
   // Generate a unique filename for the downloaded QR code
   const rawTenantName = invoice.tenant?.name || 'Tenant';
@@ -60,12 +67,27 @@ export default async function PaymentPage({ params }) {
           <>
             <QRDisplay qrUrl={qrUrl} fileName={downloadFileName} />
 
+            <div style={{ marginBottom: '1.5rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.75rem', fontWeight: 'bold' }}>Pay Instantly (Android Only):</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <a href={phonePeIntent} className="btn" style={{ backgroundColor: '#5f259f', color: 'white', padding: '0.8rem', fontSize: '0.95rem', textAlign: 'center', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold' }}>
+                  PhonePe
+                </a>
+                <a href={gpayIntent} className="btn" style={{ backgroundColor: '#ffffff', color: '#3c4043', border: '1px solid #dadce0', padding: '0.8rem', fontSize: '0.95rem', textAlign: 'center', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold' }}>
+                  GPay
+                </a>
+                <a href={paytmIntent} className="btn" style={{ backgroundColor: '#00baf2', color: 'white', padding: '0.8rem', fontSize: '0.95rem', textAlign: 'center', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', gridColumn: 'span 2' }}>
+                  Paytm
+                </a>
+              </div>
+            </div>
+
             <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '8px', padding: '0.75rem', marginBottom: '1rem', textAlign: 'left', display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
               <div style={{ fontSize: '1.2rem', marginTop: '-2px' }}>💡</div>
               <div>
-                <h3 style={{ color: 'var(--warning-color)', fontSize: '0.85rem', margin: '0 0 0.25rem 0', fontWeight: 'bold' }}>How to Pay</h3>
+                <h3 style={{ color: 'var(--warning-color)', fontSize: '0.85rem', margin: '0 0 0.25rem 0', fontWeight: 'bold' }}>iPhone Users / Fallback</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: '0', lineHeight: '1.3' }}>
-                  Scan from <strong>any UPI app</strong>. If on your phone, download the QR and select it from your gallery in the scanner!
+                  If the buttons above fail, simply download the QR code above and select it from your gallery inside your UPI app's scanner!
                 </p>
               </div>
             </div>
