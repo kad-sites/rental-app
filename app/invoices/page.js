@@ -100,10 +100,16 @@ export default function InvoicesPage() {
     let cleanBaseUrl = baseUrl.replace(/^https?:\/\//, '');
     let payUrl = `${cleanBaseUrl}/pay/${inv.id}`;
     
-    const billType = inv.type === 'EB' ? 'electricity bill' : 'rent';
     const rawAmountStr = Number(inv.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2});
     const hiddenAmount = rawAmountStr.split('').join('\u200B'); // Defeat WhatsApp Pay regex
-    const text = `Hello ${inv.tenant?.name},\n\nYour ${billType} for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+    let text = `Hello ${inv.tenant?.name},\n\nYour rent for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+    
+    if (inv.type === 'EB') {
+      const prev = inv.previousReading || 0;
+      const curr = inv.currentReading || 0;
+      const units = curr - prev;
+      text = `Hello ${inv.tenant?.name},\n\nYour electricity bill for ${units} units (from meter reading ${prev} to ${curr}) is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+    }
     
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
     
@@ -122,8 +128,13 @@ export default function InvoicesPage() {
       phone = '91' + phone;
     }
     phone = phone.replace('+', '');
-    const billType = inv.type === 'EB' ? 'electricity bill' : 'rent';
-    const text = `Hello ${inv.tenant?.name},\n\nYour payment for this month's ${billType} of ₹${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})} has been successfully received.\n\nThank you!`;
+    let text = `Hello ${inv.tenant?.name},\n\nYour payment for this month's rent of ₹${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})} has been successfully received.\n\nThank you!`;
+    if (inv.type === 'EB') {
+      const prev = inv.previousReading || 0;
+      const curr = inv.currentReading || 0;
+      const units = curr - prev;
+      text = `Hello ${inv.tenant?.name},\n\nYour payment for ${units} units of electricity (from reading ${prev} to ${curr}) of ₹${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})} has been successfully received.\n\nThank you!`;
+    }
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
   }
 
@@ -324,7 +335,11 @@ export default function InvoicesPage() {
             <button onClick={() => setPreviewInvoice(null)} style={{position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.5rem', cursor: 'pointer', padding: '0'}}>&times;</button>
             <h2 style={{marginTop: '0'}}>Message Preview</h2>
             <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', whiteSpace: 'pre-wrap', border: '1px solid var(--border-color)'}}>
-              {`Hello ${previewInvoice.tenant?.name},\n\nYour ${previewInvoice.type === 'EB' ? 'electricity bill' : 'rent'} for this month is ₹${Number(previewInvoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${typeof window !== 'undefined' ? window.location.host : 'localhost:3000'}/pay/${previewInvoice.id}\n\nThank you!`}
+              {previewInvoice.type === 'EB' ? 
+                `Hello ${previewInvoice.tenant?.name},\n\nYour electricity bill for ${previewInvoice.currentReading - previewInvoice.previousReading} units (from meter reading ${previewInvoice.previousReading} to ${previewInvoice.currentReading}) is ₹${Number(previewInvoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${typeof window !== 'undefined' ? window.location.host : 'localhost:3000'}/pay/${previewInvoice.id}\n\nThank you!`
+                : 
+                `Hello ${previewInvoice.tenant?.name},\n\nYour rent for this month is ₹${Number(previewInvoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${typeof window !== 'undefined' ? window.location.host : 'localhost:3000'}/pay/${previewInvoice.id}\n\nThank you!`
+              }
             </div>
             <div style={{textAlign: 'center'}}>
               <a href={`/pay/${previewInvoice.id}`} target="_blank" className="btn btn-success" style={{textDecoration: 'none', display: 'inline-block', padding: '0.5rem 1rem'}}>
