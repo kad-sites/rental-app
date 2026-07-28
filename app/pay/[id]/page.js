@@ -53,11 +53,14 @@ export default async function PaymentPage({ params }) {
           <>
             <QRDisplay qrUrl={qrUrl} />
 
-            <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.5rem', textAlign: 'left' }}>
-              <h3 style={{ color: 'var(--warning-color)', fontSize: '1rem', margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>How to Pay:</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: '0' }}>
-                Scan this QR from <strong>GPay, PhonePe, or any UPI app</strong> to pay rent. If you are on your phone, download the QR above and select it from your gallery in your UPI app's scanner!
-              </p>
+            <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '8px', padding: '0.75rem', marginBottom: '1rem', textAlign: 'left', display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+              <div style={{ fontSize: '1.2rem', marginTop: '-2px' }}>💡</div>
+              <div>
+                <h3 style={{ color: 'var(--warning-color)', fontSize: '0.85rem', margin: '0 0 0.25rem 0', fontWeight: 'bold' }}>How to Pay</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: '0', lineHeight: '1.3' }}>
+                  Scan from <strong>any UPI app</strong>. If on your phone, download the QR and select it from your gallery in the scanner!
+                </p>
+              </div>
             </div>
             
             <MarkPaidButton invoiceId={invoice.id} />
