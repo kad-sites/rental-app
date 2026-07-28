@@ -26,7 +26,7 @@ export async function POST(request) {
         data: {
           tenantId: tenant.id,
           amountDue: tenant.rentAmount,
-          dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         }
       })
       return NextResponse.json(invoice)
@@ -42,7 +42,7 @@ export async function POST(request) {
         data: {
           tenantId: tenant.id,
           amountDue: tenant.rentAmount,
-          dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         }
       })
       invoices.push(invoice)

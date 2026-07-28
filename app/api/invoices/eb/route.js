@@ -28,7 +28,7 @@ export async function POST(request) {
         tenantId: tenant.id,
         amountDue,
         type: 'EB',
-        dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       }
     })
 
