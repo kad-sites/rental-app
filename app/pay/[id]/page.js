@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import MarkPaidButton from './MarkPaidButton'
+import QRDisplay from './QRDisplay'
 
 export default async function PaymentPage({ params }) {
   const { id } = await params;
@@ -50,28 +51,7 @@ export default async function PaymentPage({ params }) {
           </div>
         ) : (
           <>
-            <div style={{ padding: '1rem', background: 'white', borderRadius: '12px', display: 'inline-block', marginBottom: '1rem' }}>
-              <a href={qrUrl} download="rent-qr.png" target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none' }}>
-                <img 
-                  src={qrUrl} 
-                  alt="UPI QR Code" 
-                  style={{ 
-                    display: 'block',
-                    width: '200px', 
-                    height: '200px', 
-                    margin: '0 auto',
-                    cursor: 'pointer'
-                  }} 
-                  title="Click to download QR code"
-                />
-              </a>
-            </div>
-
-            <div style={{ marginBottom: '1.5rem' }}>
-              <a href={qrUrl} download="rent-qr.png" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'inline-block', padding: '0.6rem 1.2rem', fontSize: '0.9rem', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold' }}>
-                ⬇️ Download QR Code
-              </a>
-            </div>
+            <QRDisplay qrUrl={qrUrl} />
 
             <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.5rem', textAlign: 'left' }}>
               <h3 style={{ color: 'var(--warning-color)', fontSize: '1rem', margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>How to Pay:</h3>
