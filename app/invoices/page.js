@@ -260,7 +260,7 @@ export default function InvoicesPage() {
                           <button 
                             className="btn btn-outline" 
                             style={{padding: '0.4rem 0.6rem', fontSize: '0.75rem', borderColor: '#25D366', color: '#25D366'}}
-                            onClick={() => handleSendManual(inv)}
+                            onClick={() => handleSendWhatsApp(inv.id)}
                             disabled={sendingId === inv.id}
                             title="Send silently in background via Twilio API"
                           >
