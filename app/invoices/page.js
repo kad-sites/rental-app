@@ -219,7 +219,10 @@ export default function InvoicesPage() {
                   <tr key={inv.id}>
                     <td>{new Date(inv.createdAt).toLocaleDateString('en-IN')}</td>
                     <td>{inv.tenant?.name || 'Unknown'}</td>
-                    <td>₹{inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                    <td>
+                      ₹{inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}
+                      {inv.type === 'EB' && <span className="eb-badge" style={{marginLeft: '8px', fontSize: '0.7rem', padding: '2px 5px', background: '#e0f2fe', color: '#0369a1', borderRadius: '4px'}}>⚡ EB</span>}
+                    </td>
                     <td>
                       <span className={`badge ${inv.status === 'PAID' ? 'badge-paid' : inv.status === 'VERIFYING' ? 'badge-warning' : 'badge-pending'}`}>
                         {inv.status === 'PENDING' ? 'Pending' : inv.status === 'PAID' ? 'Paid' : 'Verifying'}

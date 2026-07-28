@@ -363,11 +363,11 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                               {t.name}
                               {t.invoices?.filter(i => new Date(i.dueDate) < new Date()).length > 0 && (
                                 <svg 
-                                  className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 2 ? 'bulb-red' : 'bulb-yellow'} 
+                                  className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 3 ? 'bulb-red' : t.invoices.filter(i => new Date(i.dueDate) < new Date()).length === 2 ? 'bulb-orange' : 'bulb-yellow'} 
                                   width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                                   style={{flexShrink: 0}}
                                 >
-                                  <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+                                  <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm0 17.5c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2z"/>
                                 </svg>
                               )}
                             </span>
@@ -462,11 +462,11 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                         {inv.tenant.name}
                         {overdueCount > 0 && (
                           <svg 
-                            className={overdueCount >= 2 ? 'bulb-red' : 'bulb-yellow'} 
+                            className={overdueCount >= 3 ? 'bulb-red' : overdueCount === 2 ? 'bulb-orange' : 'bulb-yellow'} 
                             width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                             style={{flexShrink: 0}}
                           >
-                            <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm0 17.5c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2z"/>
                           </svg>
                         )}
                       </div>
@@ -474,6 +474,7 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                     <td>{new Date(inv.dueDate).toLocaleDateString('en-IN')}</td>
                     <td style={{color: inv.status === 'VERIFYING' ? '#fbbf24' : 'var(--warning-color)', fontWeight: '600', whiteSpace: 'nowrap'}}>
                       ₹{inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}
+                      {inv.type === 'EB' && <span className="eb-badge">⚡ EB</span>}
                       {inv.status === 'VERIFYING' && <span style={{fontSize: '0.75rem', marginLeft: '0.4rem', color: '#fbbf24', fontWeight: 'normal'}}>(⏳ Tenant claims paid)</span>}
                     </td>
                     <td style={{display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', flexWrap: 'nowrap'}}>

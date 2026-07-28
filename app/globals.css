@@ -364,25 +364,52 @@ input[type="file"]::file-selector-button:hover {
 }
 
 @keyframes pulse-glow-yellow {
-  0% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.4)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(234, 179, 8, 1)); }
-  100% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.4)); }
+  0% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.5)); transform: scale(1); }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 1)); transform: scale(1.1); }
+  100% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.5)); transform: scale(1); }
+}
+
+@keyframes pulse-glow-orange {
+  0% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.5)); transform: scale(1); }
+  50% { opacity: 1; filter: drop-shadow(0 0 12px rgba(249, 115, 22, 1)); transform: scale(1.15); }
+  100% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.5)); transform: scale(1); }
 }
 
 @keyframes pulse-glow-red {
-  0% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 1)); }
-  100% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4)); }
+  0% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); transform: scale(1); }
+  50% { opacity: 1; filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1)); transform: scale(1.2); }
+  100% { opacity: 0.5; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); transform: scale(1); }
 }
 
 .bulb-yellow {
   color: #eab308;
-  animation: pulse-glow-yellow 2s infinite ease-in-out;
+  animation: pulse-glow-yellow 1.5s infinite ease-in-out;
+}
+
+.bulb-orange {
+  color: #f97316;
+  animation: pulse-glow-orange 1s infinite ease-in-out;
 }
 
 .bulb-red {
   color: #ef4444;
-  animation: pulse-glow-red 1s infinite ease-in-out;
+  animation: pulse-glow-red 0.5s infinite ease-in-out;
+}
+
+.eb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background-color: rgba(234, 179, 8, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  border-radius: 12px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .client-name-link {
