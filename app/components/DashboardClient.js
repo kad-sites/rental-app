@@ -361,9 +361,9 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                               style={{display: 'inline-flex', alignItems: 'center', gap: '6px'}}
                             >
                               {t.name}
-                              {t.invoices?.length > 0 && (
+                              {t.invoices?.filter(i => new Date(i.dueDate) < new Date()).length > 0 && (
                                 <svg 
-                                  className={t.invoices.length >= 2 ? 'bulb-red' : 'bulb-yellow'} 
+                                  className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 2 ? 'bulb-red' : 'bulb-yellow'} 
                                   width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                                   style={{flexShrink: 0}}
                                 >
@@ -454,15 +454,15 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
               </thead>
               <tbody>
                 {pendingInvoices.map(inv => {
-                  const pendingCount = pendingInvoices.filter(i => i.tenantId === inv.tenantId).length;
+                  const overdueCount = pendingInvoices.filter(i => i.tenantId === inv.tenantId && new Date(i.dueDate) < new Date()).length;
                   return (
                   <tr key={inv.id}>
                     <td>
                       <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}>
                         {inv.tenant.name}
-                        {pendingCount > 0 && (
+                        {overdueCount > 0 && (
                           <svg 
-                            className={pendingCount >= 2 ? 'bulb-red' : 'bulb-yellow'} 
+                            className={overdueCount >= 2 ? 'bulb-red' : 'bulb-yellow'} 
                             width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                             style={{flexShrink: 0}}
                           >

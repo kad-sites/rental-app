@@ -799,9 +799,9 @@ export default function TenantsPage() {
                                 style={{display: 'inline-flex', alignItems: 'center', gap: '6px'}}
                               >
                                 {t.name}
-                                {t.invoices?.length > 0 && (
+                                {t.invoices?.filter(i => new Date(i.dueDate) < new Date()).length > 0 && (
                                   <svg 
-                                    className={t.invoices.length >= 2 ? 'bulb-red' : 'bulb-yellow'} 
+                                    className={t.invoices.filter(i => new Date(i.dueDate) < new Date()).length >= 2 ? 'bulb-red' : 'bulb-yellow'} 
                                     width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                                     style={{flexShrink: 0}}
                                   >
