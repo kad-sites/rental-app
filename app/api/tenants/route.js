@@ -7,6 +7,13 @@ export async function GET(request) {
 
   const tenants = await prisma.tenant.findMany({
     where: { isActive, isDeleted: false },
+    include: {
+      invoices: {
+        where: {
+          status: { in: ['PENDING', 'VERIFYING'] }
+        }
+      }
+    },
     orderBy: { createdAt: 'desc' }
   })
   return NextResponse.json(tenants)

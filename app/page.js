@@ -8,6 +8,13 @@ export default async function Dashboard() {
   const [activeTenants, pendingInvoices, totalDepositObj] = await Promise.all([
     prisma.tenant.findMany({
       where: { isActive: true, isDeleted: false },
+      include: {
+        invoices: {
+          where: {
+            status: { in: ['PENDING', 'VERIFYING'] }
+          }
+        }
+      },
       orderBy: { createdAt: 'desc' }
     }),
     prisma.invoice.findMany({

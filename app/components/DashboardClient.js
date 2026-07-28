@@ -350,7 +350,7 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                         </td>
                       </tr>
                       {groupedActiveTenants[house].map(t => (
-                        <tr key={t.id}>
+                        <tr key={t.id} style={{backgroundColor: t.invoices?.length >= 3 ? 'rgba(239, 68, 68, 0.2)' : t.invoices?.length === 2 ? 'rgba(249, 115, 22, 0.2)' : t.invoices?.length === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
                           <td>
                             <div style={{fontWeight: '450', color: 'var(--text-primary)'}}>Unit {t.unitNo || '-'}</div>
                           </td>
@@ -443,8 +443,10 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                 </tr>
               </thead>
               <tbody>
-                {pendingInvoices.map(inv => (
-                  <tr key={inv.id}>
+                {pendingInvoices.map(inv => {
+                  const pendingCount = pendingInvoices.filter(i => i.tenantId === inv.tenantId).length;
+                  return (
+                  <tr key={inv.id} style={{backgroundColor: pendingCount >= 3 ? 'rgba(239, 68, 68, 0.2)' : pendingCount === 2 ? 'rgba(249, 115, 22, 0.2)' : pendingCount === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
                     <td>{inv.tenant.name}</td>
                     <td>{new Date(inv.dueDate).toLocaleDateString('en-IN')}</td>
                     <td style={{color: inv.status === 'VERIFYING' ? '#fbbf24' : 'var(--warning-color)', fontWeight: '600', whiteSpace: 'nowrap'}}>
@@ -491,7 +493,7 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                       )}
                     </td>
                   </tr>
-                ))}
+                )})}
                 {pendingInvoices.length === 0 && <tr><td colSpan="4" style={{textAlign: 'center'}}>No pending invoices right now!</td></tr>}
               </tbody>
             </table>

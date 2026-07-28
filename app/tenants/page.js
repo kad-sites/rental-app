@@ -788,7 +788,7 @@ export default function TenantsPage() {
                           </td>
                         </tr>
                         {groupedTenants[house].map(t => (
-                          <tr key={t.id}>
+                          <tr key={t.id} style={{backgroundColor: t.invoices?.length >= 3 ? 'rgba(239, 68, 68, 0.2)' : t.invoices?.length === 2 ? 'rgba(249, 115, 22, 0.2)' : t.invoices?.length === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
                             <td data-label="Unit" style={{whiteSpace: 'nowrap'}}>
                               <div style={{fontWeight: '450', color: 'var(--text-primary)'}}>Unit {t.unitNo || '-'}</div>
                             </td>

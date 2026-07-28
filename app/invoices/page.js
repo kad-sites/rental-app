@@ -116,6 +116,17 @@ export default function InvoicesPage() {
     fetchInvoices();
   }
 
+  const handleSendReceipt = (inv) => {
+    let phone = inv.tenant?.phone || '';
+    if (!phone.startsWith('91') && !phone.startsWith('+')) {
+      phone = '91' + phone;
+    }
+    phone = phone.replace('+', '');
+    const billType = inv.type === 'EB' ? 'electricity bill' : 'rent';
+    const text = `Hello ${inv.tenant?.name},\n\nYour payment for this month's ${billType} of ₹${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})} has been successfully received.\n\nThank you!`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
   const handleMarkPaid = async (id, isVerifying = false) => {
     const msg = isVerifying 
       ? 'Are you sure you want to confirm this UPI payment and mark it as officially PAID?' 
@@ -273,14 +284,24 @@ export default function InvoicesPage() {
                           </button>
                         </>
                       ) : (
-                        <button 
-                          className="btn btn-outline" 
-                          style={{padding: '0.4rem 0.6rem', fontSize: '0.75rem', borderColor: 'var(--warning-color)', color: 'var(--warning-color)'}}
-                          onClick={() => handleDeleteInvoice(inv.id)}
-                          title="Permanently delete this invoice"
-                        >
-                          Delete Payment
-                        </button>
+                        <>
+                          <button 
+                            className="btn btn-outline" 
+                            style={{padding: '0.4rem 0.6rem', fontSize: '0.75rem', borderColor: '#25D366', color: '#25D366'}}
+                            onClick={() => handleSendReceipt(inv)}
+                            title="Send payment confirmation via WhatsApp"
+                          >
+                            WhatsApp Receipt
+                          </button>
+                          <button 
+                            className="btn btn-outline" 
+                            style={{padding: '0.4rem 0.6rem', fontSize: '0.75rem', borderColor: 'var(--warning-color)', color: 'var(--warning-color)'}}
+                            onClick={() => handleDeleteInvoice(inv.id)}
+                            title="Permanently delete this invoice"
+                          >
+                            Delete Payment
+                          </button>
+                        </>
                       )}
                     </td>
                   </tr>
