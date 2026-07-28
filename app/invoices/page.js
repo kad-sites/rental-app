@@ -264,7 +264,7 @@ export default function InvoicesPage() {
                             disabled={sendingId === inv.id}
                             title="Send silently in background via Twilio API"
                           >
-                            {sendingId === inv.id ? '...' : 'Auto WA'}
+                            {sendingId === inv.id ? '...' : 'WhatsApp'}
                           </button>
                         </>
                       ) : (
