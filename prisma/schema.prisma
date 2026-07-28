@@ -33,6 +33,7 @@ model Tenant {
   roommate2PassportUrl String?
   roommate2PhotoUrl String?
   isActive    Boolean   @default(true)
+  isDeleted   Boolean   @default(false)
   invoices    Invoice[]
 }
 

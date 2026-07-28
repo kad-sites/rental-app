@@ -32,8 +32,10 @@ export async function POST(request) {
       return NextResponse.json(invoice)
     }
     
-    // If no tenantId, generate for all tenants (Batch generation for the 1st of month)
-    const tenants = await prisma.tenant.findMany()
+    // If no tenantId, generate for active tenants only (Batch generation for the 1st of month)
+    const tenants = await prisma.tenant.findMany({
+      where: { isActive: true, isDeleted: false }
+    })
     const invoices = []
     for (const tenant of tenants) {
       const invoice = await prisma.invoice.create({

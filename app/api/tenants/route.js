@@ -6,7 +6,7 @@ export async function GET(request) {
   const isActive = searchParams.get('isActive') !== 'false'
 
   const tenants = await prisma.tenant.findMany({
-    where: { isActive },
+    where: { isActive, isDeleted: false },
     orderBy: { createdAt: 'desc' }
   })
   return NextResponse.json(tenants)

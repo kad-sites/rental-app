@@ -7,7 +7,7 @@ export default async function Dashboard() {
   // Fetch full lists for the interactive dashboard in PARALLEL for maximum speed
   const [activeTenants, pendingInvoices, totalDepositObj] = await Promise.all([
     prisma.tenant.findMany({
-      where: { isActive: true },
+      where: { isActive: true, isDeleted: false },
       orderBy: { createdAt: 'desc' }
     }),
     prisma.invoice.findMany({
@@ -19,7 +19,7 @@ export default async function Dashboard() {
     }),
     prisma.tenant.aggregate({
       _sum: { deposit: true },
-      where: { isActive: true }
+      where: { isActive: true, isDeleted: false }
     })
   ]);
   

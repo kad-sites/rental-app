@@ -187,6 +187,19 @@ export default function TenantsPage() {
     }
   }
 
+  const handleDeleteTenant = async (tenantId) => {
+    if (!confirm('Are you sure you want to delete this tenant? Their past invoices and collections will be preserved under their name.')) return;
+    
+    const res = await fetch('/api/tenants', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: tenantId, isDeleted: true })
+    })
+    if (res.ok) {
+      fetchTenants()
+    }
+  }
+
   const handleGenerateSingle = async (tenantId) => {
     const res = await fetch('/api/invoices', {
       method: 'POST',
@@ -767,6 +780,15 @@ export default function TenantsPage() {
                                 >
                                   {t.isActive ? 'Vacate' : 'Restore'}
                                 </button>
+                                {!t.isActive && (
+                                  <button 
+                                    className="btn" 
+                                    style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #444444'}}
+                                    onClick={() => handleDeleteTenant(t.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                )}
                               </div>
                             </td>
                           </tr>
