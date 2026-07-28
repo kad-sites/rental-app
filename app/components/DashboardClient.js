@@ -53,7 +53,13 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
     }
     phone = phone.replace('+', '');
     
-    const text = `Hello ${inv.tenant?.name},\n\nYour rent for this month (Rs. ${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}) is currently PENDING.\n\nPlease pay at the earliest without any ifs and buts.\n\nPay here: ${window.location.origin}/pay/${inv.id}`;
+    let text = `Hello ${inv.tenant?.name},\n\nYour rent for this month (Rs. ${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}) is currently PENDING.\n\nPlease pay at the earliest without any ifs and buts.\n\nPay here: ${window.location.origin}/pay/${inv.id}`;
+    if (inv.type === 'EB') {
+      const prev = inv.previousReading || 0;
+      const curr = inv.currentReading || 0;
+      const units = curr - prev;
+      text = `Hello ${inv.tenant?.name},\n\nYour electricity bill for ${units} units (from meter reading ${prev} to ${curr}) (Rs. ${inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}) is currently PENDING.\n\nPlease pay at the earliest without any ifs and buts.\n\nPay here: ${window.location.origin}/pay/${inv.id}`;
+    }
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
