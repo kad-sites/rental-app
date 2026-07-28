@@ -788,13 +788,14 @@ export default function TenantsPage() {
                           </td>
                         </tr>
                         {groupedTenants[house].map(t => (
-                          <tr key={t.id} style={{backgroundColor: t.invoices?.length >= 3 ? 'rgba(239, 68, 68, 0.2)' : t.invoices?.length === 2 ? 'rgba(249, 115, 22, 0.2)' : t.invoices?.length === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
+                          <tr key={t.id}>
                             <td data-label="Unit" style={{whiteSpace: 'nowrap'}}>
                               <div style={{fontWeight: '450', color: 'var(--text-primary)'}}>Unit {t.unitNo || '-'}</div>
                             </td>
                             <td data-label="Name & Info">
                               <span 
                                 className="client-name-link"
+                                style={{color: t.invoices?.length >= 3 ? '#ef4444' : t.invoices?.length === 2 ? '#f97316' : t.invoices?.length === 1 ? '#eab308' : ''}}
                                 onClick={() => setSelectedClient(t)}
                               >
                                 {t.name}

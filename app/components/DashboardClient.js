@@ -350,13 +350,14 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                         </td>
                       </tr>
                       {groupedActiveTenants[house].map(t => (
-                        <tr key={t.id} style={{backgroundColor: t.invoices?.length >= 3 ? 'rgba(239, 68, 68, 0.2)' : t.invoices?.length === 2 ? 'rgba(249, 115, 22, 0.2)' : t.invoices?.length === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
+                        <tr key={t.id}>
                           <td>
                             <div style={{fontWeight: '450', color: 'var(--text-primary)'}}>Unit {t.unitNo || '-'}</div>
                           </td>
                           <td>
                             <span 
                               className="client-name-link"
+                              style={{color: t.invoices?.length >= 3 ? '#ef4444' : t.invoices?.length === 2 ? '#f97316' : t.invoices?.length === 1 ? '#eab308' : ''}}
                               onClick={() => setSelectedClient(t)}
                             >
                               {t.name}
@@ -446,8 +447,8 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                 {pendingInvoices.map(inv => {
                   const pendingCount = pendingInvoices.filter(i => i.tenantId === inv.tenantId).length;
                   return (
-                  <tr key={inv.id} style={{backgroundColor: pendingCount >= 3 ? 'rgba(239, 68, 68, 0.2)' : pendingCount === 2 ? 'rgba(249, 115, 22, 0.2)' : pendingCount === 1 ? 'rgba(234, 179, 8, 0.2)' : 'transparent'}}>
-                    <td>{inv.tenant.name}</td>
+                  <tr key={inv.id}>
+                    <td style={{color: pendingCount >= 3 ? '#ef4444' : pendingCount === 2 ? '#f97316' : pendingCount === 1 ? '#eab308' : '', fontWeight: pendingCount >= 1 ? '600' : 'normal'}}>{inv.tenant.name}</td>
                     <td>{new Date(inv.dueDate).toLocaleDateString('en-IN')}</td>
                     <td style={{color: inv.status === 'VERIFYING' ? '#fbbf24' : 'var(--warning-color)', fontWeight: '600', whiteSpace: 'nowrap'}}>
                       ₹{inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}
