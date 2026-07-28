@@ -50,16 +50,17 @@ export default async function PaymentPage({ params }) {
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <a href={upiUrl} className="btn btn-success" style={{ display: 'block', padding: '1rem', fontSize: '1.1rem', textAlign: 'center', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', width: '100%' }}>
-                Pay instantly via GPay / Paytm
-              </a>
-              <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '8px', padding: '0.75rem', marginTop: '1rem', textAlign: 'left' }}>
-                <p style={{ color: 'var(--warning-color)', fontSize: '0.85rem', margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>🚨 PhonePe Users:</p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: 0 }}>
-                  PhonePe blocks automatic web links. To use PhonePe without typing the amount, please <strong>Take a Screenshot</strong> of the QR code below, open PhonePe, tap the Scan icon, and select the screenshot from your gallery!
-                </p>
-              </div>
+            <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+              <h3 style={{ color: 'var(--warning-color)', fontSize: '1rem', margin: '0 0 0.75rem 0', fontWeight: 'bold' }}>How to Pay from your Phone:</h3>
+              <ol style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, paddingLeft: '1.25rem', lineHeight: '1.6' }}>
+                <li style={{ marginBottom: '0.5rem' }}><strong>Take a screenshot</strong> of the QR code below.</li>
+                <li style={{ marginBottom: '0.5rem' }}>Open <strong>GPay, PhonePe, or Paytm</strong>.</li>
+                <li style={{ marginBottom: '0.5rem' }}>Tap the <strong>QR Scanner</strong> icon.</li>
+                <li>Select the <strong>Screenshot</strong> from your gallery!</li>
+              </ol>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1rem', fontStyle: 'italic', opacity: 0.8 }}>
+                *Due to RBI security rules, UPI apps block automatic web links for rent payments to prevent scams. Scanning the QR from your gallery guarantees the exact amount is billed securely!
+              </p>
             </div>
             
             <MarkPaidButton invoiceId={invoice.id} />
