@@ -52,28 +52,32 @@ export default async function PaymentPage({ params }) {
           <>
             <div style={{ marginBottom: '1.5rem' }}>
               <a href={upiUrl} className="btn btn-success" style={{ display: 'block', padding: '1rem', fontSize: '1.1rem', textAlign: 'center', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', width: '100%' }}>
-                Pay instantly via UPI App
+                Pay instantly via GPay / Paytm
               </a>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center', marginTop: '0.5rem' }}>
-                Opens PhonePe, GPay, Paytm automatically
-              </p>
+              <div style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)', border: '1px solid var(--warning-color)', borderRadius: '8px', padding: '0.75rem', marginTop: '1rem', textAlign: 'left' }}>
+                <p style={{ color: 'var(--warning-color)', fontSize: '0.85rem', margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>🚨 PhonePe Users:</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: 0 }}>
+                  PhonePe blocks automatic web links. To use PhonePe without typing the amount, please <strong>Take a Screenshot</strong> of the QR code below, open PhonePe, tap the Scan icon, and select the screenshot from your gallery!
+                </p>
+              </div>
             </div>
             
             <MarkPaidButton invoiceId={invoice.id} />
 
-            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', marginTop: '1rem' }}>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem', fontSize: '0.85rem' }}>Or scan QR from another phone:</p>
-              <img 
-                src={qrUrl} 
-                alt="UPI QR Code" 
-                style={{ 
-                  borderRadius: '8px', 
-                  border: '3px solid white', 
-                  width: '150px', 
-                  height: '150px', 
-                  margin: '0 auto' 
-                }} 
-              />
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', marginTop: '1rem' }}>
+              <p style={{ color: 'var(--text-primary)', marginBottom: '1rem', fontSize: '0.95rem', fontWeight: 'bold' }}>Scan to Pay</p>
+              <div style={{ background: 'white', padding: '1rem', borderRadius: '12px', display: 'inline-block', marginBottom: '1rem' }}>
+                <img 
+                  src={qrUrl} 
+                  alt="UPI QR Code" 
+                  style={{ 
+                    display: 'block',
+                    width: '200px', 
+                    height: '200px', 
+                    margin: '0 auto' 
+                  }} 
+                />
+              </div>
             </div>
           </>
         )}
