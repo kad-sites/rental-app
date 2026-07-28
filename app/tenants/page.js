@@ -884,14 +884,17 @@ export default function TenantsPage() {
               <button onClick={() => setEbModalOpen(false)} style={{background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem'}}>&times;</button>
             </div>
             
-            <p style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem'}}>
-              Tenant: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.name}</strong><br />
-              Last Reading: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.lastMeterReading || 0}</strong><br />
-              Rate: <strong style={{color: 'var(--text-primary)'}}>₹{selectedEbTenant.ebRate || 0} / unit</strong>
-            </p>
+            <div style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', background: 'rgba(255,255,255,0.03)', padding: '0.8rem', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)'}}>
+              <div style={{marginBottom: '0.4rem'}}>Tenant: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.name}</strong></div>
+              <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem'}}>
+                <span>Initial Reading: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.initialMeterReading || 0}</strong></span>
+                <span>Previous Reading: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.lastMeterReading !== null ? selectedEbTenant.lastMeterReading : (selectedEbTenant.initialMeterReading || 0)}</strong></span>
+              </div>
+              <div>Rate: <strong style={{color: 'var(--text-primary)'}}>₹{selectedEbTenant.ebRate || 0} / unit</strong></div>
+            </div>
 
             <form onSubmit={handleGenerateEbBill}>
-              <div className="form-group" style={{marginBottom: '1.5rem'}}>
+              <div className="form-group" style={{marginBottom: '1rem'}}>
                 <label>Current Meter Reading</label>
                 <input 
                   type="number" 
@@ -899,9 +902,22 @@ export default function TenantsPage() {
                   required 
                   value={ebCurrentReading} 
                   onChange={e => setEbCurrentReading(e.target.value)}
-                  placeholder={`Must be > ${selectedEbTenant.lastMeterReading || 0}`}
+                  placeholder={`Must be > ${selectedEbTenant.lastMeterReading !== null ? selectedEbTenant.lastMeterReading : (selectedEbTenant.initialMeterReading || 0)}`}
                 />
               </div>
+
+              {ebCurrentReading && !isNaN(parseFloat(ebCurrentReading)) && parseFloat(ebCurrentReading) >= (selectedEbTenant.lastMeterReading !== null ? selectedEbTenant.lastMeterReading : (selectedEbTenant.initialMeterReading || 0)) && (
+                <div style={{marginBottom: '1.5rem', padding: '0.8rem', backgroundColor: 'rgba(37, 211, 102, 0.05)', border: '1px solid rgba(37, 211, 102, 0.3)', borderRadius: '6px', color: 'var(--text-primary)'}}>
+                  <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.3rem', color: 'var(--text-secondary)'}}>
+                    <span>Units Consumed:</span>
+                    <strong>{parseFloat(ebCurrentReading) - (selectedEbTenant.lastMeterReading !== null ? selectedEbTenant.lastMeterReading : (selectedEbTenant.initialMeterReading || 0))} units</strong>
+                  </div>
+                  <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '1.1rem', fontWeight: 'bold'}}>
+                    <span>Bill Amount:</span>
+                    <span style={{color: '#25D366'}}>₹{((parseFloat(ebCurrentReading) - (selectedEbTenant.lastMeterReading !== null ? selectedEbTenant.lastMeterReading : (selectedEbTenant.initialMeterReading || 0))) * (selectedEbTenant.ebRate || 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+                  </div>
+                </div>
+              )}
               <div style={{display: 'flex', gap: '0.5rem'}}>
                 <button type="submit" className="btn btn-success" style={{flex: 1}} disabled={ebGenerating}>
                   {ebGenerating ? 'Generating...' : 'Generate Bill'}

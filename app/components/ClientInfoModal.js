@@ -112,8 +112,8 @@ export default function ClientInfoModal({ tenant, onClose }) {
 
         <div style={{marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
           <div>
-            <div style={{color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.2rem'}}>Last Meter Reading</div>
-            <div style={{fontWeight: '600', color: 'var(--text-primary)', fontSize: '1.1rem'}}>{tenant.lastMeterReading !== null ? tenant.lastMeterReading : (tenant.initialMeterReading || 0)}</div>
+            <div style={{color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.2rem'}}>Initial &rarr; Last Reading</div>
+            <div style={{fontWeight: '600', color: 'var(--text-primary)', fontSize: '1.1rem'}}>{tenant.initialMeterReading || 0} <span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>&rarr; {tenant.lastMeterReading !== null ? tenant.lastMeterReading : (tenant.initialMeterReading || 0)}</span></div>
           </div>
           <div>
             <div style={{color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.2rem'}}>EB Rate</div>
