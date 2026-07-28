@@ -346,6 +346,7 @@ export default function TenantsPage() {
                   <div className="form-group" style={{marginBottom: '0.5rem'}}>
                     <div style={{display: 'flex', gap: '0.5rem', flexWrap: 'nowrap'}}>
                       <select 
+                        id="r1-doc-select"
                         className="form-control" 
                         style={{flex: '2', minWidth: '0'}}
                         onChange={(e) => {
@@ -373,7 +374,12 @@ export default function TenantsPage() {
                           style={{display: 'none'}} 
                         />
                         <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('r1-unified-file-upload').click()} title="Choose File">📂</button>
-                        <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('r1-unified-camera-upload').click()} title="Open Camera">📷</button>
+                        <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => {
+                          const select = document.getElementById('r1-doc-select');
+                          if (select) select.value = 'roommate1Photo';
+                          document.getElementById('r1-unified-file-upload').setAttribute('data-doctype', 'roommate1Photo');
+                          document.getElementById('r1-unified-camera-upload').click();
+                        }} title="Open Camera">📷</button>
                         <input 
                           type="file" 
                           id="r1-unified-camera-upload"
@@ -461,6 +467,7 @@ export default function TenantsPage() {
                   <div className="form-group" style={{marginBottom: '0.5rem'}}>
                     <div style={{display: 'flex', gap: '0.5rem', flexWrap: 'nowrap'}}>
                       <select 
+                        id="r2-doc-select"
                         className="form-control" 
                         style={{flex: '2', minWidth: '0'}}
                         onChange={(e) => {
@@ -488,7 +495,12 @@ export default function TenantsPage() {
                           style={{display: 'none'}} 
                         />
                         <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('r2-unified-file-upload').click()} title="Choose File">📂</button>
-                        <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('r2-unified-camera-upload').click()} title="Open Camera">📷</button>
+                        <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => {
+                          const select = document.getElementById('r2-doc-select');
+                          if (select) select.value = 'roommate2Photo';
+                          document.getElementById('r2-unified-file-upload').setAttribute('data-doctype', 'roommate2Photo');
+                          document.getElementById('r2-unified-camera-upload').click();
+                        }} title="Open Camera">📷</button>
                         <input 
                           type="file" 
                           id="r2-unified-camera-upload"
@@ -604,6 +616,7 @@ export default function TenantsPage() {
             <div className="form-group" style={{marginBottom: '0.5rem'}}>
               <div style={{display: 'flex', gap: '0.5rem', flexWrap: 'nowrap'}}>
                 <select 
+                  id="primary-doc-select"
                   className="form-control" 
                   style={{flex: '2', minWidth: '0'}}
                   onChange={(e) => {
@@ -632,7 +645,12 @@ export default function TenantsPage() {
                     style={{display: 'none'}} 
                   />
                   <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('unified-file-upload').click()} title="Choose File">📂</button>
-                  <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => document.getElementById('unified-camera-upload').click()} title="Open Camera">📷</button>
+                  <button type="button" className="btn btn-outline" style={{padding: '0.5rem 0.8rem', flex: '1', borderColor: 'var(--border-color)', color: 'var(--text-primary)', display: 'flex', justifyContent: 'center'}} onClick={() => {
+                    const select = document.getElementById('primary-doc-select');
+                    if (select) select.value = 'photo';
+                    document.getElementById('unified-file-upload').setAttribute('data-doctype', 'photo');
+                    document.getElementById('unified-camera-upload').click();
+                  }} title="Open Camera">📷</button>
                   <input 
                     type="file" 
                     id="unified-camera-upload"
