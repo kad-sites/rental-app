@@ -168,7 +168,7 @@ export default function InvoicesPage() {
   return (
     <main className="container animate-fade-in">
       <div className="flex-between">
-        <h1>Invoices & Billing</h1>
+        <h1>Invoices & Billing (v1.1)</h1>
         <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
           <button 
             className="btn btn-outline" 
