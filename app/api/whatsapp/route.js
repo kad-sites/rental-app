@@ -46,8 +46,12 @@ export async function POST(request) {
     // Send message via Twilio
     if (accountSid && authToken && twilioPhoneNumber) {
       const client = twilio(accountSid, authToken)
+      
+      const rawAmountStr = Number(invoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      const hiddenAmount = rawAmountStr.split('').join('\u200B'); // Defeat WhatsApp Pay regex
+      
       const msg = await client.messages.create({
-        body: `Hello ${invoice.tenant.name},\n\nYour rent for this month is ₹${invoice.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`,
+        body: `Hello ${invoice.tenant.name},\n\nYour rent for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`,
         from: twilioPhoneNumber,
         to: `whatsapp:${phone}`,
         mediaUrl: [qrApiUrl]

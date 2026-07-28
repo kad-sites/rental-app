@@ -99,8 +99,9 @@ export default function InvoicesPage() {
     let payUrl = `${baseUrl}/pay/${inv.id}`;
     
     const billType = inv.type === 'EB' ? 'electricity bill' : 'rent';
-    const amountStr = Number(inv.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2});
-    const text = `Hello ${inv.tenant?.name},\n\nYour ${billType} for this month is ₹${amountStr}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+    const rawAmountStr = Number(inv.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2});
+    const hiddenAmount = rawAmountStr.split('').join('\u200B'); // Defeat WhatsApp Pay regex
+    const text = `Hello ${inv.tenant?.name},\n\nYour ${billType} for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
     
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
     
