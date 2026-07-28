@@ -51,8 +51,17 @@ export async function POST(request) {
       const rawAmountStr = Number(invoice.amountDue).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
       const hiddenAmount = rawAmountStr.split('').join('\u200B'); // Defeat WhatsApp Pay regex
       
+      let messageBody = `Hello ${invoice.tenant.name},\n\nYour rent for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+
+      if (invoice.type === 'EB') {
+        const prev = invoice.previousReading || 0;
+        const curr = invoice.currentReading || 0;
+        const units = curr - prev;
+        messageBody = `Hello ${invoice.tenant.name},\n\nYour electricity bill for ${units} units (from meter reading ${prev} to ${curr}) is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`;
+      }
+      
       const msg = await client.messages.create({
-        body: `Hello ${invoice.tenant.name},\n\nYour rent for this month is ₹\u200B${hiddenAmount}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`,
+        body: messageBody,
         from: twilioPhoneNumber,
         to: `whatsapp:${phone}`,
         mediaUrl: [qrApiUrl]

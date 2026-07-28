@@ -29,6 +29,8 @@ export async function POST(request) {
         amountDue,
         type: 'EB',
         dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        previousReading: tenant.lastMeterReading,
+        currentReading: current,
       }
     })
 
