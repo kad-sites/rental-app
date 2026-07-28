@@ -23,6 +23,9 @@ export async function POST(request) {
         unitNo: data.unitNo || null,
         deposit: parseFloat(data.deposit),
         rentAmount: parseFloat(data.rentAmount),
+        initialMeterReading: parseFloat(data.initialMeterReading || 0),
+        lastMeterReading: parseFloat(data.initialMeterReading || 0),
+        ebRate: parseFloat(data.ebRate || 0),
         aadharUrl: data.aadharUrl || null,
         passportUrl: data.passportUrl || null,
         photoUrl: data.photoUrl || null,
@@ -52,6 +55,9 @@ export async function PATCH(request) {
     
     if (updateData.deposit !== undefined) updateData.deposit = parseFloat(updateData.deposit);
     if (updateData.rentAmount !== undefined) updateData.rentAmount = parseFloat(updateData.rentAmount);
+    if (updateData.initialMeterReading !== undefined) updateData.initialMeterReading = parseFloat(updateData.initialMeterReading);
+    if (updateData.lastMeterReading !== undefined) updateData.lastMeterReading = parseFloat(updateData.lastMeterReading);
+    if (updateData.ebRate !== undefined) updateData.ebRate = parseFloat(updateData.ebRate);
 
     const tenant = await prisma.tenant.update({
       where: { id },

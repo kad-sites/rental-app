@@ -15,7 +15,11 @@ export default function TenantsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   const [files, setFiles] = useState({ aadhar: null, passport: null, photo: null, agreement: null, roommate1Aadhar: null, roommate1Passport: null, roommate1Photo: null, roommate2Aadhar: null, roommate2Passport: null, roommate2Photo: null })
-  const [formData, setFormData] = useState({ name: '', phone: '91', houseNo: '', unitNo: '', deposit: '', rentAmount: '', roommate1Name: '', roommate1Phone: '91', roommate2Name: '', roommate2Phone: '91' })
+  const [formData, setFormData] = useState({ name: '', phone: '91', houseNo: '', unitNo: '', deposit: '', rentAmount: '', initialMeterReading: '0', ebRate: '10', roommate1Name: '', roommate1Phone: '91', roommate2Name: '', roommate2Phone: '91' })
+  const [ebModalOpen, setEbModalOpen] = useState(false)
+  const [selectedEbTenant, setSelectedEbTenant] = useState(null)
+  const [ebCurrentReading, setEbCurrentReading] = useState('')
+  const [ebGenerating, setEbGenerating] = useState(false)
   const [selectedClient, setSelectedClient] = useState(null)
   const [roommateCount, setRoommateCount] = useState(0)
 
@@ -64,6 +68,8 @@ export default function TenantsPage() {
       unitNo: tenant.unitNo || '',
       deposit: tenant.deposit.toString(),
       rentAmount: tenant.rentAmount.toString(),
+      initialMeterReading: (tenant.initialMeterReading || 0).toString(),
+      ebRate: (tenant.ebRate || 0).toString(),
       roommate1Name: tenant.roommate1Name || '',
       roommate1Phone: tenant.roommate1Phone || '91',
       roommate2Name: tenant.roommate2Name || '',
@@ -99,7 +105,7 @@ export default function TenantsPage() {
   const cancelEdit = () => {
     setEditingId(null)
     setIsFormOpen(false)
-    setFormData({ name: '', phone: '91', houseNo: '', unitNo: '', deposit: '', rentAmount: '', roommate1Name: '', roommate1Phone: '91', roommate2Name: '', roommate2Phone: '91' })
+    setFormData({ name: '', phone: '91', houseNo: '', unitNo: '', deposit: '', rentAmount: '', initialMeterReading: '0', ebRate: '10', roommate1Name: '', roommate1Phone: '91', roommate2Name: '', roommate2Phone: '91' })
     setRoommateCount(0)
     setFiles({ aadhar: null, passport: null, photo: null, agreement: null, roommate1Aadhar: null, roommate1Passport: null, roommate1Photo: null, roommate2Aadhar: null, roommate2Passport: null, roommate2Photo: null })
     setCurrentDocs({ aadharUrl: null, passportUrl: null, photoUrl: null, agreementUrl: null, roommate1AadharUrl: null, roommate1PassportUrl: null, roommate1PhotoUrl: null, roommate2AadharUrl: null, roommate2PassportUrl: null, roommate2PhotoUrl: null })
@@ -210,6 +216,28 @@ export default function TenantsPage() {
       alert('Invoice generated successfully! Go to the Invoices tab to send it via WhatsApp.')
     } else {
       alert('Failed to generate invoice.')
+    }
+  }
+
+  const handleGenerateEbBill = async (e) => {
+    e.preventDefault();
+    if(!selectedEbTenant) return;
+    setEbGenerating(true);
+    
+    const res = await fetch('/api/invoices/eb', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tenantId: selectedEbTenant.id, currentReading: ebCurrentReading })
+    })
+    
+    setEbGenerating(false);
+    if (res.ok) {
+      alert('EB Bill generated successfully! Go to Invoices tab.');
+      setEbModalOpen(false);
+      fetchTenants();
+    } else {
+      const data = await res.json();
+      alert(`Error: ${data.error || 'Failed to generate EB bill'}`);
     }
   }
 
@@ -568,6 +596,17 @@ export default function TenantsPage() {
                 <input type="number" className="form-control" required value={formData.rentAmount} onChange={e => setFormData({...formData, rentAmount: e.target.value})} />
               </div>
             </div>
+            
+            <div className="form-grid" style={{marginTop: '1.5rem'}}>
+              <div className="form-group">
+                <label>Initial Meter Reading <span style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>(defaults to 0)</span></label>
+                <input type="number" className="form-control" required value={formData.initialMeterReading} onChange={e => setFormData({...formData, initialMeterReading: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>EB Rate (Per Unit) (₹)</label>
+                <input type="number" className="form-control" required value={formData.ebRate} onChange={e => setFormData({...formData, ebRate: e.target.value})} />
+              </div>
+            </div>
 
             <h3 style={{fontSize: '0.9rem', fontWeight: 'bold', marginTop: '1rem', marginBottom: '0.5rem', color: 'var(--text-success)'}}>
               {editingId ? 'Update Documents (Optional)' : 'Upload Documents'}
@@ -776,13 +815,22 @@ export default function TenantsPage() {
                             <td data-label="Actions">
                               <div style={{display: 'flex', gap: '0.3rem', flexWrap: 'nowrap'}}>
                                 {t.isActive && (
-                                  <button 
-                                    className="btn btn-success" 
-                                    style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center'}}
-                                    onClick={() => handleGenerateSingle(t.id)}
-                                  >
-                                    Bill
-                                  </button>
+                                  <>
+                                    <button 
+                                      className="btn btn-success" 
+                                      style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center'}}
+                                      onClick={() => handleGenerateSingle(t.id)}
+                                    >
+                                      Rent Bill
+                                    </button>
+                                    <button 
+                                      className="btn btn-outline" 
+                                      style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', borderColor: 'var(--primary-color)', color: 'var(--primary-color)'}}
+                                      onClick={() => { setSelectedEbTenant(t); setEbCurrentReading(''); setEbModalOpen(true); }}
+                                    >
+                                      EB Bill
+                                    </button>
+                                  </>
                                 )}
                                 <button 
                                   className="btn" 
@@ -822,6 +870,49 @@ export default function TenantsPage() {
       </div>
 
       <ClientInfoModal tenant={selectedClient} onClose={() => setSelectedClient(null)} />
+
+      {ebModalOpen && selectedEbTenant && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 1000, 
+          display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem'
+        }}>
+          <div className="glass-panel" style={{width: '100%', maxWidth: '400px', backgroundColor: 'var(--bg-color)'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+              <h2 style={{margin: 0, fontSize: '1.2rem', color: 'var(--text-primary)'}}>Generate EB Bill</h2>
+              <button onClick={() => setEbModalOpen(false)} style={{background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem'}}>&times;</button>
+            </div>
+            
+            <p style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem'}}>
+              Tenant: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.name}</strong><br />
+              Last Reading: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.lastMeterReading || 0}</strong><br />
+              Rate: <strong style={{color: 'var(--text-primary)'}}>₹{selectedEbTenant.ebRate || 0} / unit</strong>
+            </p>
+
+            <form onSubmit={handleGenerateEbBill}>
+              <div className="form-group" style={{marginBottom: '1.5rem'}}>
+                <label>Current Meter Reading</label>
+                <input 
+                  type="number" 
+                  className="form-control" 
+                  required 
+                  value={ebCurrentReading} 
+                  onChange={e => setEbCurrentReading(e.target.value)}
+                  placeholder={`Must be > ${selectedEbTenant.lastMeterReading || 0}`}
+                />
+              </div>
+              <div style={{display: 'flex', gap: '0.5rem'}}>
+                <button type="submit" className="btn btn-success" style={{flex: 1}} disabled={ebGenerating}>
+                  {ebGenerating ? 'Generating...' : 'Generate Bill'}
+                </button>
+                <button type="button" className="btn btn-outline" style={{flex: 1}} onClick={() => setEbModalOpen(false)} disabled={ebGenerating}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   )
 }

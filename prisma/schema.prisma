@@ -32,9 +32,12 @@ model Tenant {
   roommate2AadharUrl String?
   roommate2PassportUrl String?
   roommate2PhotoUrl String?
-  isActive    Boolean   @default(true)
-  isDeleted   Boolean   @default(false)
-  invoices    Invoice[]
+  isActive            Boolean   @default(true)
+  isDeleted           Boolean   @default(false)
+  initialMeterReading Float     @default(0)
+  lastMeterReading    Float     @default(0)
+  ebRate              Float     @default(0)
+  invoices            Invoice[]
 }
 
 model Invoice {
@@ -42,6 +45,7 @@ model Invoice {
   tenantId    Int
   amountDue   Float
   dueDate     DateTime
+  type        String   @default("RENT") // RENT, EB
   status      String   @default("PENDING") // PENDING, PAID
   whatsappSent Boolean @default(false)
   createdAt   DateTime @default(now())
