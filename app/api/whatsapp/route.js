@@ -47,7 +47,7 @@ export async function POST(request) {
     if (accountSid && authToken && twilioPhoneNumber) {
       const client = twilio(accountSid, authToken)
       const msg = await client.messages.create({
-        body: `Hello ${invoice.tenant.name},\n\nYour rent for this month is Rs. ${invoice.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}.\nTo pay instantly via GPay/PhonePe or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`,
+        body: `Hello ${invoice.tenant.name},\n\nYour rent for this month is ₹${invoice.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}.\nTo pay instantly or to view your QR code, click your secure invoice link below:\n${payUrl}\n\nThank you!`,
         from: twilioPhoneNumber,
         to: `whatsapp:${phone}`,
         mediaUrl: [qrApiUrl]
