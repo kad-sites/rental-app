@@ -137,36 +137,36 @@
 
 @keyframes pulseGlowOnline {
   0%, 100% {
-    box-shadow: 0 0 2px rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+    border-color: rgba(16, 185, 129, 0.5);
   }
   50% {
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
-    border-color: rgba(16, 185, 129, 0.9);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.9), 0 0 5px rgba(16, 185, 129, 0.4) inset;
+    border-color: rgba(16, 185, 129, 1);
   }
 }
 
 @keyframes pulseGlowOffline {
   0%, 100% {
-    box-shadow: 0 0 2px rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.4);
+    border-color: rgba(239, 68, 68, 0.5);
   }
   50% {
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
-    border-color: rgba(239, 68, 68, 0.9);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.9), 0 0 5px rgba(239, 68, 68, 0.4) inset;
+    border-color: rgba(239, 68, 68, 1);
   }
 }
 
 .statusOnline {
   color: var(--status-online);
   background: rgba(16, 185, 129, 0.1);
-  animation: pulseGlowOnline 2.5s infinite ease-in-out;
+  animation: pulseGlowOnline 1.5s infinite ease-in-out;
 }
 
 .statusOffline {
   color: var(--status-offline);
   background: rgba(239, 68, 68, 0.1);
-  animation: pulseGlowOffline 2.5s infinite ease-in-out;
+  animation: pulseGlowOffline 1.5s infinite ease-in-out;
 }
 
 .dataValue {
