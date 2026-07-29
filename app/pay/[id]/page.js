@@ -29,7 +29,7 @@ export default async function PaymentPage({ params }) {
   
   const isWhatsAppCrawler = (
     userAgent.includes('WhatsApp/') && !userAgent.includes('Mozilla/') && !userAgent.includes('AppleWebKit/')
-  ) || userAgent.includes('facebookexternalhit') || userAgent.includes('Facebot')
+  ) || userAgent.includes('facebookexternalhit') || userAgent.includes('Facebot') || userAgent.toLowerCase().includes('twilio')
   
   if (isWhatsAppCrawler) {
     notFound()
