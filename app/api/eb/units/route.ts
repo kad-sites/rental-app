@@ -25,7 +25,7 @@ export async function GET() {
 
       return {
         ...unit,
-        tenantName: matchedTenant ? matchedTenant.name : null
+        tenantName: matchedTenant ? matchedTenant.name.split(' ')[0] : null
       };
     });
 
