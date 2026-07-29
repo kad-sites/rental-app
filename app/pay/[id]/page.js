@@ -49,14 +49,9 @@ export default async function PaymentPage({ params }) {
   // Read UPI ID from environment variables, fallback if missing
   const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
   
-  // Standard universal UPI link (used for QR code and iOS fallback)
-  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR`
+  // Standard universal UPI link (used for QR code and iOS fallback). Restored amount parameter.
+  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&am=${invoice.amountDue}&cu=INR`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
-
-  // Direct app intents
-  const phonePeIntent = `intent://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end`;
-  const gpayIntent = `intent://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
-  const paytmIntent = `intent://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end`;
 
   // Generate a unique filename for the downloaded QR code
   const rawTenantName = invoice.tenant?.name || 'Tenant';
@@ -93,19 +88,13 @@ export default async function PaymentPage({ params }) {
           <>
             <QRDisplay qrUrl={qrUrl} fileName={downloadFileName} />
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <a href={gpayIntent} className="btn" style={{ backgroundColor: '#fff', color: '#3c4043', border: '1px solid #dadce0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold' }}>
-                <span style={{ fontSize: '1.2rem' }}>G</span> Pay
+            <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+              <a href={upiUrl} className="btn btn-success" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                🚀 Pay Now using UPI App
               </a>
-              <a href={phonePeIntent} className="btn" style={{ backgroundColor: '#5f259f', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold' }}>
-                PhonePe
-              </a>
-              <a href={paytmIntent} className="btn" style={{ backgroundColor: '#00baf2', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold' }}>
-                Paytm
-              </a>
-              <a href={upiUrl} className="btn" style={{ backgroundColor: 'var(--primary-color)', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold' }}>
-                Other UPI
-              </a>
+              <p style={{ margin: '0.75rem 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                (Tap to open GPay, PhonePe, Paytm, etc.)
+              </p>
             </div>
             
             <MarkPaidButton invoiceId={invoice.id} />
