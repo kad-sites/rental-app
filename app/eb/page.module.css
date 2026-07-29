@@ -93,9 +93,9 @@
 
 .table th {
   background-color: transparent;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 1.25rem 1.5rem;
@@ -119,8 +119,8 @@
 }
 
 .unitName {
-  font-weight: 500;
-  color: var(--text-main);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .status {
@@ -149,8 +149,8 @@
 
 .dataValue {
   font-variant-numeric: tabular-nums; 
-  font-weight: 500;
-  color: var(--text-main);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .dataValue.low {
@@ -166,7 +166,7 @@
 
 .subtext {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 400;
   margin-top: 0.2rem;
 }
