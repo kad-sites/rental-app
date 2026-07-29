@@ -1,28 +1,36 @@
 import { NextResponse } from 'next/server';
-import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { id } = body;
 
-    const unitIndex = unitsDB.findIndex(u => u.id === id);
-    if (unitIndex === -1) {
+    const unit = await prisma.ebMeter.findUnique({
+      where: { id }
+    });
+
+    if (!unit) {
       return NextResponse.json({ error: 'Unit not found' }, { status: 404 });
     }
 
-    const unit = unitsDB[unitIndex];
-
     if (unit.status === 'maintenance') {
       // Toggle off bypass
-      unit.status = 'offline';
-      unit.bypassTimestamp = undefined;
+      const updatedUnit = await prisma.ebMeter.update({
+        where: { id },
+        data: {
+          status: 'offline',
+          bypassTimestamp: null
+        }
+      });
       
       // Trigger Tuya to turn OFF the MCB
       await setRelayStatus(unit.deviceId, false);
       
-      return NextResponse.json({ success: true, message: 'Bypass disabled', unit });
+      return NextResponse.json({ success: true, message: 'Bypass disabled', unit: updatedUnit });
     }
 
     // Check if already online
@@ -31,14 +39,20 @@ export async function POST(request: Request) {
     }
 
     // Force bypass
-    unit.status = 'maintenance';
-    unit.bypassTimestamp = Date.now();
+    const updatedUnit = await prisma.ebMeter.update({
+      where: { id },
+      data: {
+        status: 'maintenance',
+        bypassTimestamp: BigInt(Date.now())
+      }
+    });
     
     // Trigger Tuya to turn ON the MCB for cleaning
     await setRelayStatus(unit.deviceId, true);
 
-    return NextResponse.json({ success: true, unit });
+    return NextResponse.json({ success: true, unit: updatedUnit });
   } catch (error) {
+    console.error('Bypass error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }

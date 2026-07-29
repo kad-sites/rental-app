@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert } from '@/lib/twilioEB';
 import { PrismaClient } from '@prisma/client';
@@ -11,12 +10,13 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { id } = body;
 
-    const unitIndex = unitsDB.findIndex(u => u.id === id);
-    if (unitIndex === -1) {
+    const unit = await prisma.ebMeter.findUnique({
+      where: { id }
+    });
+
+    if (!unit) {
       return NextResponse.json({ error: 'Unit not found' }, { status: 404 });
     }
-
-    const unit = unitsDB[unitIndex];
 
     // Check if already offline
     if (unit.status === 'offline') {
@@ -24,7 +24,12 @@ export async function POST(request: Request) {
     }
 
     // Force disconnect
-    unit.status = 'offline';
+    const updatedUnit = await prisma.ebMeter.update({
+      where: { id },
+      data: {
+        status: 'offline'
+      }
+    });
     
     // Trigger Tuya to turn OFF the MCB
     await setRelayStatus(unit.deviceId, false);
@@ -54,8 +59,9 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, unit });
+    return NextResponse.json({ success: true, unit: updatedUnit });
   } catch (error) {
+    console.error('Disconnect error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }

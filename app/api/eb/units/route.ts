@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert } from '@/lib/twilioEB';
 import { PrismaClient } from '@prisma/client';
@@ -12,7 +11,11 @@ export async function GET() {
       where: { isActive: true, isDeleted: false }
     });
 
-    const enrichedUnits = unitsDB.map(unit => {
+    const meters = await prisma.ebMeter.findMany({
+      orderBy: [{ house: 'asc' }, { name: 'asc' }]
+    });
+
+    const enrichedUnits = meters.map(unit => {
       const unitHouseNum = unit.house.replace(/\D/g, '');
       const unitNum = unit.name.replace(/\D/g, '');
 
@@ -31,8 +34,8 @@ export async function GET() {
 
     return NextResponse.json(enrichedUnits);
   } catch (error) {
-    console.error('Error fetching tenants for EB:', error);
-    return NextResponse.json(unitsDB);
+    console.error('Error fetching EB meters:', error);
+    return NextResponse.json({ error: 'Failed to fetch meters' }, { status: 500 });
   }
 }
 
@@ -41,35 +44,64 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { id, rechargeAmountRs } = body;
 
-    const unitIndex = unitsDB.findIndex(u => u.id === id);
-    if (unitIndex === -1) {
+    const unit = await prisma.ebMeter.findUnique({
+      where: { id }
+    });
+
+    if (!unit) {
       return NextResponse.json({ error: 'Unit not found' }, { status: 404 });
     }
-
-    const unit = unitsDB[unitIndex];
 
     const RATE_PER_UNIT = 8.5; // Rs 8.5 per kWh
     const rechargeKwh = parseFloat(rechargeAmountRs) / RATE_PER_UNIT;
 
     // Update balance
-    unit.balance += rechargeKwh;
+    let newBalance = unit.balance + rechargeKwh;
+    let newStatus = unit.status;
+    let newBypassTimestamp = unit.bypassTimestamp;
     
     // If balance is now > 0 and was offline or in maintenance, turn it online and switch Tuya relay ON
-    if (unit.balance > 0 && (unit.status === 'offline' || unit.status === 'maintenance')) {
-      unit.status = 'online';
-      
-      // Trigger Tuya to turn ON the MCB
+    if (newBalance > 0 && (unit.status === 'offline' || unit.status === 'maintenance')) {
+      newStatus = 'online';
+      newBypassTimestamp = null;
       await setRelayStatus(unit.deviceId, true);
     }
 
-    // Send WhatsApp confirmation
-    await sendWhatsAppAlert(
-      unit.phoneNumber, 
-      `✅ *Electricity Recharged*\nYour meter for ${unit.house} - ${unit.name} has been recharged with ₹${rechargeAmountRs} (${rechargeKwh.toFixed(2)} kWh).\nNew Balance: ${unit.balance.toFixed(2)} kWh.`
-    );
+    const updatedUnit = await prisma.ebMeter.update({
+      where: { id },
+      data: {
+        balance: newBalance,
+        status: newStatus,
+        bypassTimestamp: newBypassTimestamp
+      }
+    });
 
-    return NextResponse.json({ success: true, unit: unitsDB[unitIndex] });
+    // Send WhatsApp confirmation
+    const message = `⚡ *KirayaEB Recharge Successful*\nRs ${rechargeAmountRs} added to ${unit.house} - ${unit.name}.\nNew Balance: ${newBalance.toFixed(2)} kWh`;
+    
+    const tenants = await prisma.tenant.findMany({
+      where: { isActive: true, isDeleted: false }
+    });
+
+    const unitHouseNum = unit.house.replace(/\D/g, '');
+    const unitNum = unit.name.replace(/\D/g, '');
+
+    const matchedTenant = tenants.find(t => {
+      if (!t.houseNo || !t.unitNo) return false;
+      const tenantHouseNum = t.houseNo.replace(/\D/g, '');
+      const tenantUnitNum = t.unitNo.replace(/\D/g, '');
+      return tenantHouseNum === unitHouseNum && tenantUnitNum === unitNum;
+    });
+
+    const phoneNumberToAlert = matchedTenant?.phone ? `+91${matchedTenant.phone}` : unit.phoneNumber;
+
+    if (phoneNumberToAlert) {
+      await sendWhatsAppAlert(phoneNumberToAlert, message);
+    }
+
+    return NextResponse.json({ success: true, unit: updatedUnit });
   } catch (error) {
+    console.error('Recharge error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }

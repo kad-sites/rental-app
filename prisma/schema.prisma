@@ -54,3 +54,17 @@ model Invoice {
   updatedAt   DateTime @updatedAt
   tenant      Tenant   @relation(fields: [tenantId], references: [id])
 }
+
+model EbMeter {
+  id              Int      @id @default(autoincrement())
+  house           String
+  name            String
+  balance         Float    @default(0.0)
+  totalConsumed   Float    @default(0.0)
+  status          String   @default("online") // online, offline, maintenance
+  deviceId        String   @unique
+  phoneNumber     String?
+  bypassTimestamp BigInt?  // store Date.now() timestamp
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

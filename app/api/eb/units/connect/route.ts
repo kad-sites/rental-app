@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert } from '@/lib/twilioEB';
 import { PrismaClient } from '@prisma/client';
@@ -11,21 +10,27 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { id } = body;
 
-    const unitIndex = unitsDB.findIndex(u => u.id === id);
-    if (unitIndex === -1) {
+    const unit = await prisma.ebMeter.findUnique({
+      where: { id }
+    });
+
+    if (!unit) {
       return NextResponse.json({ error: 'Unit not found' }, { status: 404 });
     }
-
-    const unit = unitsDB[unitIndex];
 
     // Check if already online
     if (unit.status === 'online') {
        return NextResponse.json({ success: true, message: 'Already connected', unit });
     }
 
-    // Force connect
-    unit.status = 'online';
-    unit.bypassTimestamp = undefined;
+    // Force connect and clear bypass
+    const updatedUnit = await prisma.ebMeter.update({
+      where: { id },
+      data: {
+        status: 'online',
+        bypassTimestamp: null
+      }
+    });
     
     // Trigger Tuya to turn ON the MCB
     await setRelayStatus(unit.deviceId, true);
@@ -51,12 +56,13 @@ export async function POST(request: Request) {
     if (phoneNumberToAlert) {
       await sendWhatsAppAlert(
         phoneNumberToAlert, 
-        `⚡ *Electricity Restored*\nYour meter for ${unit.house} - ${unit.name} has been manually reconnected to the billing system.\nThank you.`
+        `✅ *Electricity Reconnected*\nYour meter for ${unit.house} - ${unit.name} has been manually connected by the landlord.\nBilling has resumed.`
       );
     }
 
-    return NextResponse.json({ success: true, unit });
+    return NextResponse.json({ success: true, unit: updatedUnit });
   } catch (error) {
+    console.error('Connect error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }
