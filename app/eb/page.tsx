@@ -113,7 +113,11 @@ export default function Dashboard() {
 
       if (res.ok) {
         fetchUnits();
-        alert('Maintenance mode activated. Power is ON.');
+        if (isMaintenance) {
+          alert('Bypass turned OFF. Meter is now offline.');
+        } else {
+          alert('Maintenance mode activated. Power is ON.');
+        }
       }
     } catch (error) {
       console.error('Bypass failed', error);
@@ -215,12 +219,12 @@ export default function Dashboard() {
                     </button>
                   )}
                   <button 
-                    className={styles.bypassBtn}
-                    onClick={() => handleBypass(unit.id)}
-                    disabled={unit.status !== 'offline'}
-                    title="Bypass Power for Maintenance"
+                    className={unit.status === 'maintenance' ? styles.activeBypassBtn : styles.bypassBtn}
+                    onClick={() => handleBypass(unit.id, unit.status)}
+                    disabled={unit.status === 'online'}
+                    title={unit.status === 'maintenance' ? 'Turn Off Bypass' : 'Bypass Power for Maintenance'}
                   >
-                    Bypass
+                    {unit.status === 'maintenance' ? 'Bypass Off' : 'Bypass'}
                   </button>
                 </div>
               </td>

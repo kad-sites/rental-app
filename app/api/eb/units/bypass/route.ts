@@ -14,9 +14,20 @@ export async function POST(request: Request) {
 
     const unit = unitsDB[unitIndex];
 
-    // Check if already in maintenance
     if (unit.status === 'maintenance') {
-       return NextResponse.json({ success: true, message: 'Already in maintenance', unit });
+      // Toggle off bypass
+      unit.status = 'offline';
+      unit.bypassTimestamp = undefined;
+      
+      // Trigger Tuya to turn OFF the MCB
+      await setRelayStatus(unit.deviceId, false);
+      
+      return NextResponse.json({ success: true, message: 'Bypass disabled', unit });
+    }
+
+    // Check if already online
+    if (unit.status === 'online') {
+       return NextResponse.json({ error: 'Cannot bypass active meter' }, { status: 400 });
     }
 
     // Force bypass

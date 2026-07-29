@@ -315,6 +315,22 @@
   color: var(--text-muted);
 }
 
+.activeBypassBtn {
+  background: rgba(245, 158, 11, 0.9);
+  color: #fff;
+  border: 1px solid rgba(245, 158, 11, 1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.activeBypassBtn:hover {
+  background: rgba(245, 158, 11, 1);
+}
+
 .loading {
   display: flex;
   justify-content: center;
