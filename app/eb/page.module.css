@@ -257,7 +257,8 @@
 
 .disconnectBtn {
   height: 34px;
-  padding: 0 0.8rem;
+  width: 105px;
+  padding: 0;
   background: transparent;
   color: var(--text-muted);
   border: 1px solid rgba(239, 68, 68, 0.4);
@@ -266,7 +267,6 @@
   font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
-  min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -287,7 +287,8 @@
 
 .connectBtn {
   height: 34px;
-  padding: 0 0.8rem;
+  width: 105px;
+  padding: 0;
   background: transparent;
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.4);
@@ -296,7 +297,6 @@
   font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
-  min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -336,7 +336,7 @@
 .bypassBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  border-color: var(--border-color);
+  border-color: rgba(245, 158, 11, 0.4);
   color: var(--text-muted);
 }
 
