@@ -303,7 +303,7 @@ export default function InvoicesPage() {
                             onClick={() => handleSendManual(inv)}
                             title="Open WhatsApp manually on your device"
                           >
-                            wa.me
+                            Whatsapp
                           </button>
                         </>
                       ) : (
