@@ -164,8 +164,8 @@ export default function Dashboard() {
                   <div className={styles.subtext}>₹{consumedRs} total</div>
                 </td>
                 <td>
-                <div className={styles.actionCell} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  <input 
+                <div className={styles.actionCell} style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                  <input  
                     type="number" 
                     placeholder="₹ Amount" 
                     className={styles.rechargeInput}
