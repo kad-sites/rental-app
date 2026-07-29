@@ -233,10 +233,10 @@ export default function TenantsPage() {
       if (!phone.startsWith('91') && !phone.startsWith('+')) phone = '91' + phone;
       phone = phone.replace('+', '');
       
-      let text = `Hello ${selectedVacateTenant.name},\n\nYour account has been successfully settled and you have been marked as vacated.\n\n*Settlement Details:*\n- Initial Deposit: ₹${selectedVacateTenant.deposit.toLocaleString('en-IN', {minimumFractionDigits: 2})}\n- Pending Rent/EB Dues: ₹${pendingDues.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      let text = `Hello ${selectedVacateTenant.name},\n\nYour account has been successfully settled and you have been marked as vacated.\n\n*Settlement Details:*\n- Initial Deposit: ₹\u200B${selectedVacateTenant.deposit.toLocaleString('en-IN', {minimumFractionDigits: 2})}\n- Pending Rent/EB Dues: ₹\u200B${pendingDues.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       if (parseFloat(customDeductions) > 0) {
-        text += `\n- Other Deductions: ₹${parseFloat(customDeductions).toLocaleString('en-IN', {minimumFractionDigits: 2})} (${customDeductionReason || 'Damages/Cleaning'})`;
+        text += `\n- Other Deductions: ₹\u200B${parseFloat(customDeductions).toLocaleString('en-IN', {minimumFractionDigits: 2})} (${customDeductionReason || 'Damages/Cleaning'})`;
       }
       
       if (finalRefund < 0) {
@@ -244,9 +244,9 @@ export default function TenantsPage() {
         const upiId = process.env.NEXT_PUBLIC_UPI_ID || 'zohebkarizo-1@okaxis';
         const upiUrl = `upi://pay?pa=${upiId}&pn=Landlord&am=${amountDue}&cu=INR`;
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`;
-        text += `\n\n*Amount Due: ₹${amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nPlease pay the pending amount by clicking this QR code link:\n${qrUrl}\n\nThank you for staying with us!`;
+        text += `\n\n*Amount Due: ₹\u200B${amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nPlease pay the pending amount by clicking this QR code link:\n${qrUrl}\n\nThank you for staying with us!`;
       } else {
-        text += `\n\n*Final Refund Amount: ₹${finalRefund.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nThank you for staying with us!`;
+        text += `\n\n*Final Refund Amount: ₹\u200B${finalRefund.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nThank you for staying with us!`;
       }
       
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
