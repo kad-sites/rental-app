@@ -101,8 +101,13 @@ export default function Dashboard() {
     }
   };
 
-  const handleBypass = async (id: number) => {
-    if (!confirm('Enable Maintenance Bypass? This will turn power ON instantly for cleaning/repairs.')) return;
+  const handleBypass = async (id: number, currentStatus: string) => {
+    const isMaintenance = currentStatus === 'maintenance';
+    const msg = isMaintenance 
+      ? 'Are you sure you want to turn OFF bypass and disconnect power?' 
+      : 'Enable Maintenance Bypass? This will turn power ON instantly for cleaning/repairs.';
+
+    if (!confirm(msg)) return;
     
     try {
       const res = await fetch('/api/eb/units/bypass', {

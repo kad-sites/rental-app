@@ -209,7 +209,8 @@
 
 .rechargeInput {
   width: 90px;
-  padding: 0.4rem 0.6rem;
+  height: 34px;
+  padding: 0 0.6rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.2);
@@ -217,6 +218,7 @@
   font-size: 0.85rem;
   transition: all 0.2s;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .rechargeInput:focus {
@@ -226,7 +228,8 @@
 }
 
 .rechargeBtn {
-  padding: 0.4rem 0.8rem;
+  height: 34px;
+  padding: 0 0.8rem;
   background: transparent;
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
@@ -236,6 +239,10 @@
   transition: all 0.2s;
   min-width: 80px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .rechargeBtn:hover {
@@ -249,15 +256,21 @@
 }
 
 .disconnectBtn {
+  height: 34px;
+  padding: 0 0.8rem;
   background: transparent;
   color: var(--text-muted);
   border: 1px solid rgba(239, 68, 68, 0.4);
-  padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
   min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .disconnectBtn:hover:not(:disabled) {
@@ -273,15 +286,21 @@
 }
 
 .connectBtn {
+  height: 34px;
+  padding: 0 0.8rem;
   background: transparent;
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.4);
-  padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
   min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .connectBtn:hover:not(:disabled) {
@@ -291,15 +310,21 @@
 }
 
 .bypassBtn {
+  height: 34px;
+  padding: 0 0.8rem;
   background: transparent;
   color: #f59e0b;
   border: 1px solid rgba(245, 158, 11, 0.4);
-  padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
   min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .bypassBtn:hover:not(:disabled) {
@@ -316,15 +341,21 @@
 }
 
 .activeBypassBtn {
+  height: 34px;
+  padding: 0 0.8rem;
   background: rgba(245, 158, 11, 0.9);
   color: #fff;
   border: 1px solid rgba(245, 158, 11, 1);
-  padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
   min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .activeBypassBtn:hover {
