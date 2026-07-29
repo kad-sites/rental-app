@@ -49,8 +49,8 @@ export default async function PaymentPage({ params }) {
   // Read UPI ID from environment variables, fallback if missing
   const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
   
-  // Standard universal UPI link (used for QR code and iOS fallback). Restored amount parameter.
-  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&am=${invoice.amountDue}&cu=INR`
+  // Standard universal UPI link (used for QR code and iOS fallback). Amount removed for manual entry.
+  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
 
   // Generate a unique filename for the downloaded QR code
