@@ -5,28 +5,13 @@ import MarkPaidButton from './MarkPaidButton'
 import QRDisplay from './QRDisplay'
 import CopyUpiBox from './CopyUpiBox'
 
-export async function generateMetadata({ params }) {
-  const { id } = await params;
-  const invoiceId = parseInt(id)
-  if (isNaN(invoiceId)) return { title: 'Invoice Not Found' };
-  
-  const invoice = await prisma.invoice.findUnique({
-    where: { id: invoiceId },
-    include: { tenant: true }
-  })
-
-  if (!invoice) return { title: 'Invoice Not Found' };
-
-  const type = invoice.type === 'EB' ? 'Electricity Bill' : 'Rent Invoice';
-  
-  return {
-    title: `${type} - ${invoice.tenant?.name || 'Tenant'}`,
-    description: `Secure payment portal for ₹${invoice.amountDue.toLocaleString('en-IN')}`,
-    openGraph: {
-      title: `${type} - ${invoice.tenant?.name || 'Tenant'}`,
-      description: `Secure payment portal for ₹${invoice.amountDue.toLocaleString('en-IN')}`,
-      type: 'website',
-    }
+export const metadata = {
+  title: '\u200B',
+  description: '',
+  openGraph: {
+    title: '',
+    description: '',
+    images: []
   }
 }
 
