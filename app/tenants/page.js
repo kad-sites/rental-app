@@ -1018,7 +1018,7 @@ export default function TenantsPage() {
                 <label style={{display: 'block', marginBottom: '0.2rem', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Custom Deductions (e.g. Damages/Painting) (₹)</label>
                 <input 
                   type="number" 
-                  className="input-field" 
+                  className="form-control" 
                   value={customDeductions}
                   onChange={(e) => setCustomDeductions(e.target.value)}
                   placeholder="0"
@@ -1027,7 +1027,7 @@ export default function TenantsPage() {
                 {parseFloat(customDeductions) > 0 && (
                   <input 
                     type="text" 
-                    className="input-field" 
+                    className="form-control" 
                     value={customDeductionReason}
                     onChange={(e) => setCustomDeductionReason(e.target.value)}
                     placeholder="Reason for deduction"

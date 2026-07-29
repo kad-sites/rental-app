@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(request, { params }) {
   try {
-    const tenantId = parseInt(params.id)
+    const { id } = await params;
+    const tenantId = parseInt(id)
     if (isNaN(tenantId)) {
       return NextResponse.json({ error: 'Invalid tenant ID' }, { status: 400 })
     }
