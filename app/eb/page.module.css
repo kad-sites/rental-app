@@ -313,14 +313,13 @@
   height: 34px;
   padding: 0 0.8rem;
   background: transparent;
-  color: #f59e0b;
+  color: var(--text-muted);
   border: 1px solid rgba(245, 158, 11, 0.4);
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
-  min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -330,7 +329,6 @@
 .bypassBtn:hover:not(:disabled) {
   background: rgba(245, 158, 11, 0.1);
   color: #f59e0b;
-  border-color: #f59e0b;
 }
 
 .bypassBtn:disabled {
@@ -343,23 +341,23 @@
 .activeBypassBtn {
   height: 34px;
   padding: 0 0.8rem;
-  background: rgba(245, 158, 11, 0.9);
-  color: #fff;
-  border: 1px solid rgba(245, 158, 11, 1);
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.8);
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.2s;
-  min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
 }
 
 .activeBypassBtn:hover {
-  background: rgba(245, 158, 11, 1);
+  background: rgba(245, 158, 11, 0.2);
 }
 
 .loading {

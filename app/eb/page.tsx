@@ -179,8 +179,8 @@ export default function Dashboard() {
                   {unit.tenantName ? `${unit.name} : ${unit.tenantName}` : unit.name}
                 </td>
                 <td>
-                  <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : unit.status === 'maintenance' ? styles.statusMaintenance : styles.statusOffline}`}>
-                    {unit.status}
+                  <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : styles.statusOffline}`}>
+                    {unit.status === 'online' ? 'ONLINE' : 'OFFLINE'}
                   </span>
                 </td>
                 <td className={`${styles.dataValue} ${unit.balance < 5 ? styles.critical : unit.balance < 10 ? styles.warning : ''}`}>
@@ -206,13 +206,13 @@ export default function Dashboard() {
                   >
                     Recharge
                   </button>
-                  {unit.status === 'offline' ? (
+                  {(unit.status === 'offline' || unit.status === 'maintenance') ? (
                     <button 
                       className={styles.connectBtn}
                       onClick={() => handleConnect(unit.id)}
-                      title="Manually Connect Power"
+                      title="Manually Reconnect Power"
                     >
-                      Connect
+                      Reconnect
                     </button>
                   ) : (
                     <button 

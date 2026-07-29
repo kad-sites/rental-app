@@ -25,6 +25,7 @@ export async function POST(request: Request) {
 
     // Force connect
     unit.status = 'online';
+    unit.bypassTimestamp = undefined;
     
     // Trigger Tuya to turn ON the MCB
     await setRelayStatus(unit.deviceId, true);
