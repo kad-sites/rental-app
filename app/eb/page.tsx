@@ -145,29 +145,27 @@ export default function Dashboard() {
                   <div className={styles.subtext}>₹{consumedRs} total</div>
                 </td>
                 <td>
-                <div className={styles.actionCell} style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    <input 
-                      type="number" 
-                      placeholder="₹ Amount" 
-                      className={styles.rechargeInput}
-                      value={rechargeAmounts[unit.id] || ''}
-                      onChange={(e) => handleRechargeChange(unit.id, e.target.value)}
-                    />
-                    <button 
-                      className={styles.rechargeBtn}
-                      onClick={() => handleRecharge(unit.id)}
-                    >
-                      Recharge
-                    </button>
-                  </div>
+                <div className={styles.actionCell} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <input 
+                    type="number" 
+                    placeholder="₹ Amount" 
+                    className={styles.rechargeInput}
+                    value={rechargeAmounts[unit.id] || ''}
+                    onChange={(e) => handleRechargeChange(unit.id, e.target.value)}
+                  />
+                  <button 
+                    className={styles.rechargeBtn}
+                    onClick={() => handleRecharge(unit.id)}
+                  >
+                    Recharge
+                  </button>
                   <button 
                     className={styles.disconnectBtn}
                     onClick={() => handleDisconnect(unit.id)}
                     disabled={unit.status === 'offline'}
-                    style={{ marginTop: '0.25rem', width: '100%' }}
+                    title="Manually Disconnect Power"
                   >
-                    Disconnect Power
+                    Disconnect
                   </button>
                 </div>
               </td>
