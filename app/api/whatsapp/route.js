@@ -42,7 +42,7 @@ export async function POST(request) {
 
     const baseUrl = request.headers.get('origin') || new URL(request.url).origin;
     let cleanBaseUrl = baseUrl.replace(/^https?:\/\//, '');
-    const payUrl = `https://${cleanBaseUrl}/pay/${invoice.id}`;
+    const payUrl = `https://${cleanBaseUrl}/pay/${invoice.id}?_=${Date.now()}`;
     let messageSid;
     // Send message via Twilio
     if (accountSid && authToken && twilioPhoneNumber) {
