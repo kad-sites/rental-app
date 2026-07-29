@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER; 
-const UPI_ID = '919854469256@waaxis';
+const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'zohebkarizo-1@okaxis';
 
 export async function POST(request) {
   try {
@@ -37,7 +37,7 @@ export async function POST(request) {
     }
     
     // Generate UPI URL
-    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=Landlord&am=${invoice.amountDue}&cu=INR`
+    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR`
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
 
     const baseUrl = request.headers.get('origin') || new URL(request.url).origin;
