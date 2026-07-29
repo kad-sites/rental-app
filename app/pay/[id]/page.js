@@ -1,9 +1,16 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
+import { headers } from 'next/headers'
 import MarkPaidButton from './MarkPaidButton'
 import QRDisplay from './QRDisplay'
 
 export async function generateMetadata({ params }) {
+  const headersList = await headers();
+  const userAgent = headersList.get('user-agent') || '';
+  if (userAgent.toLowerCase().includes('whatsapp')) {
+    return {}; // Empty metadata disables preview banner
+  }
+
   const { id } = await params;
   const invoiceId = parseInt(id)
   if (isNaN(invoiceId)) return { title: 'Invoice Not Found' };
@@ -29,6 +36,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PaymentPage({ params }) {
+  const headersList = await headers();
+  const userAgent = headersList.get('user-agent') || '';
+  if (userAgent.toLowerCase().includes('whatsapp')) {
+    // Return 404 to WhatsApp crawler to completely prevent it from generating a link preview (ad banner)
+    notFound()
+  }
+
   const { id } = await params;
   const invoiceId = parseInt(id)
   
