@@ -249,7 +249,20 @@ export default function TenantsPage() {
         text += `\n\n*Final Refund Amount: ₹\u200B${finalRefund.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nThank you for staying with us!`;
       }
       
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+      try {
+        const waRes = await fetch('/api/whatsapp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isCustomText: true, phone: phone, text: text })
+        });
+        if (waRes.ok) {
+          alert('Tenant vacated and WhatsApp receipt sent automatically via Twilio!');
+        } else {
+          alert('Tenant vacated, but failed to send Twilio WhatsApp receipt.');
+        }
+      } catch (e) {
+        alert('Tenant vacated, but Twilio API error occurred.');
+      }
     } else {
       setVacateLoading(false);
       alert('Failed to vacate tenant.');

@@ -10,6 +10,27 @@ const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
 export async function POST(request) {
   try {
     const data = await request.json()
+    
+    // Handle arbitrary custom text messages (like vacate receipts)
+    if (data.isCustomText && data.phone && data.text) {
+      let phone = data.phone.trim();
+      if (!phone.startsWith('+')) {
+        if (phone.startsWith('91')) phone = '+' + phone;
+        else phone = '+91' + phone; 
+      }
+      if (accountSid && authToken && twilioPhoneNumber) {
+        const client = twilio(accountSid, authToken)
+        const msg = await client.messages.create({
+          body: data.text,
+          from: twilioPhoneNumber.startsWith('whatsapp:') ? twilioPhoneNumber : `whatsapp:${twilioPhoneNumber}`,
+          to: `whatsapp:${phone}`
+        })
+        return NextResponse.json({ success: true, messageSid: msg.sid })
+      } else {
+        return NextResponse.json({ error: "Twilio credentials missing." }, { status: 500 })
+      }
+    }
+
     const { invoiceId } = data
     
     const invoice = await prisma.invoice.findUnique({
