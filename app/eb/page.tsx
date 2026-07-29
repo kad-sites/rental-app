@@ -167,7 +167,7 @@ export default function Dashboard() {
             return (
               <tr key={unit.id}>
                 <td className={styles.unitName}>
-                  {unit.tenantName ? `${unit.tenantName}: ${unit.name}` : unit.name}
+                  {unit.tenantName ? `${unit.name} : ${unit.tenantName}` : unit.name}
                 </td>
                 <td>
                   <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : unit.status === 'maintenance' ? styles.statusMaintenance : styles.statusOffline}`}>
@@ -199,9 +199,9 @@ export default function Dashboard() {
                   </button>
                   {unit.status === 'offline' ? (
                     <button 
+                      className={styles.connectBtn}
                       onClick={() => handleConnect(unit.id)}
                       title="Manually Connect Power"
-                      style={{ backgroundColor: '#10b981', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
                     >
                       Connect
                     </button>
