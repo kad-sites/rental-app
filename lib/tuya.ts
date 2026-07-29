@@ -32,7 +32,7 @@ export async function getEnergyReading(deviceId: string): Promise<number> {
     });
     
     // Parse the response to find the energy value
-    const statusArray = response.result;
+    const statusArray = response.result as any[];
     const energyItem = statusArray?.find((item: any) => item.code === 'add_ele');
     
     // Tuya often returns energy in multiples of 10 or 1000, assuming direct kWh here
