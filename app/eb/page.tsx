@@ -22,7 +22,12 @@ export default function Dashboard() {
     try {
       const res = await fetch('/api/eb/units');
       const data = await res.json();
-      setUnits(data);
+      if (Array.isArray(data)) {
+        setUnits(data);
+      } else {
+        console.error('API returned non-array:', data);
+        setUnits([]);
+      }
     } catch (error) {
       console.error('Failed to fetch units', error);
     } finally {

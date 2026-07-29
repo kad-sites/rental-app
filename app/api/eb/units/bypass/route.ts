@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { setRelayStatus } from '@/lib/tuya';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -30,7 +28,14 @@ export async function POST(request: Request) {
       // Trigger Tuya to turn OFF the MCB
       await setRelayStatus(unit.deviceId, false);
       
-      return NextResponse.json({ success: true, message: 'Bypass disabled', unit: updatedUnit });
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Bypass disabled', 
+        unit: {
+          ...updatedUnit,
+          bypassTimestamp: updatedUnit.bypassTimestamp ? Number(updatedUnit.bypassTimestamp) : null
+        }
+      });
     }
 
     // Check if already online
@@ -50,7 +55,13 @@ export async function POST(request: Request) {
     // Trigger Tuya to turn ON the MCB for cleaning
     await setRelayStatus(unit.deviceId, true);
 
-    return NextResponse.json({ success: true, unit: updatedUnit });
+    return NextResponse.json({ 
+      success: true, 
+      unit: {
+        ...updatedUnit,
+        bypassTimestamp: updatedUnit.bypassTimestamp ? Number(updatedUnit.bypassTimestamp) : null
+      }
+    });
   } catch (error) {
     console.error('Bypass error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });

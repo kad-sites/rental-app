@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert, formatWhatsAppNumber } from '@/lib/twilioEB';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -60,7 +58,13 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, unit: updatedUnit });
+    return NextResponse.json({ 
+      success: true, 
+      unit: {
+        ...updatedUnit,
+        bypassTimestamp: updatedUnit.bypassTimestamp ? Number(updatedUnit.bypassTimestamp) : null
+      }
+    });
   } catch (error) {
     console.error('Connect error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });

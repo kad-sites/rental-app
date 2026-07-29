@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert, formatWhatsAppNumber } from '@/lib/twilioEB';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
@@ -28,6 +26,7 @@ export async function GET() {
 
       return {
         ...unit,
+        bypassTimestamp: unit.bypassTimestamp ? Number(unit.bypassTimestamp) : null,
         tenantName: matchedTenant ? matchedTenant.name.split(' ')[0] : null
       };
     });
@@ -99,7 +98,13 @@ export async function POST(request: Request) {
       await sendWhatsAppAlert(phoneNumberToAlert, message);
     }
 
-    return NextResponse.json({ success: true, unit: updatedUnit });
+    return NextResponse.json({ 
+      success: true, 
+      unit: {
+        ...updatedUnit,
+        bypassTimestamp: updatedUnit.bypassTimestamp ? Number(updatedUnit.bypassTimestamp) : null
+      }
+    });
   } catch (error) {
     console.error('Recharge error:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
