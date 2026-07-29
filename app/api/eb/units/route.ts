@@ -2,9 +2,38 @@ import { NextResponse } from 'next/server';
 import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
 import { sendWhatsAppAlert } from '@/lib/twilioEB';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GET() {
-  return NextResponse.json(unitsDB);
+  try {
+    const tenants = await prisma.tenant.findMany({
+      where: { isActive: true, isDeleted: false }
+    });
+
+    const enrichedUnits = unitsDB.map(unit => {
+      const unitHouseNum = unit.house.replace(/\D/g, '');
+      const unitNum = unit.name.replace(/\D/g, '');
+
+      const matchedTenant = tenants.find(t => {
+        if (!t.houseNo || !t.unitNo) return false;
+        const tenantHouseNum = t.houseNo.replace(/\D/g, '');
+        const tenantUnitNum = t.unitNo.replace(/\D/g, '');
+        return tenantHouseNum === unitHouseNum && tenantUnitNum === unitNum;
+      });
+
+      return {
+        ...unit,
+        tenantName: matchedTenant ? matchedTenant.name : null
+      };
+    });
+
+    return NextResponse.json(enrichedUnits);
+  } catch (error) {
+    console.error('Error fetching tenants for EB:', error);
+    return NextResponse.json(unitsDB);
+  }
 }
 
 export async function POST(request: Request) {

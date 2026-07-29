@@ -237,6 +237,34 @@
   transform: translateY(0);
 }
 
+.disconnectBtn {
+  padding: 0.5rem 1rem;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--status-offline);
+  border: 1px solid var(--status-offline);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.disconnectBtn:hover {
+  background: var(--status-offline);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.disconnectBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.disconnectBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 .loading {
   display: flex;
   justify-content: center;

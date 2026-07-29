@@ -7,6 +7,7 @@ type Unit = {
   id: number;
   house: string;
   name: string;
+  tenantName?: string;
   balance: number;
   totalConsumed: number;
   status: 'online' | 'offline';
@@ -81,6 +82,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleDisconnect = async (id: number) => {
+    if (!confirm('Are you sure you want to manually disconnect this meter? Power will be cut immediately.')) return;
+    
+    try {
+      const res = await fetch('/api/eb/units/disconnect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        fetchUnits();
+        alert('Meter disconnected successfully.');
+      }
+    } catch (error) {
+      console.error('Disconnect failed', error);
+    }
+  };
+
   if (loading) return <div className={styles.loading}>Loading Dashboard...</div>;
 
   // Group units by house
@@ -108,7 +128,9 @@ export default function Dashboard() {
             
             return (
               <tr key={unit.id}>
-                <td className={styles.unitName}>{unit.name}</td>
+                <td className={styles.unitName}>
+                  {unit.tenantName ? `${unit.tenantName}: ${unit.name}` : unit.name}
+                </td>
                 <td>
                   <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : styles.statusOffline}`}>
                     {unit.status}
@@ -123,19 +145,29 @@ export default function Dashboard() {
                   <div className={styles.subtext}>₹{consumedRs} total</div>
                 </td>
                 <td>
-                <div className={styles.actionCell}>
-                  <input 
-                    type="number" 
-                    placeholder="₹ Amount" 
-                    className={styles.rechargeInput}
-                    value={rechargeAmounts[unit.id] || ''}
-                    onChange={(e) => handleRechargeChange(unit.id, e.target.value)}
-                  />
+                <div className={styles.actionCell} style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <input 
+                      type="number" 
+                      placeholder="₹ Amount" 
+                      className={styles.rechargeInput}
+                      value={rechargeAmounts[unit.id] || ''}
+                      onChange={(e) => handleRechargeChange(unit.id, e.target.value)}
+                    />
+                    <button 
+                      className={styles.rechargeBtn}
+                      onClick={() => handleRecharge(unit.id)}
+                    >
+                      Recharge
+                    </button>
+                  </div>
                   <button 
-                    className={styles.rechargeBtn}
-                    onClick={() => handleRecharge(unit.id)}
+                    className={styles.disconnectBtn}
+                    onClick={() => handleDisconnect(unit.id)}
+                    disabled={unit.status === 'offline'}
+                    style={{ marginTop: '0.25rem', width: '100%' }}
                   >
-                    Recharge
+                    Disconnect Power
                   </button>
                 </div>
               </td>
