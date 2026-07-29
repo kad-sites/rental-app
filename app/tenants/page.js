@@ -276,7 +276,21 @@ export default function TenantsPage() {
       body: JSON.stringify({ tenantId })
     })
     if (res.ok) {
-      alert('Invoice generated successfully! Go to the Invoices tab to send it via WhatsApp.')
+      const invoice = await res.json()
+      try {
+        const waRes = await fetch('/api/whatsapp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invoiceId: invoice.id, useTwilio: true })
+        })
+        if (waRes.ok) {
+          alert('Rent Bill generated and sent automatically via Twilio WhatsApp!')
+        } else {
+          alert('Rent Bill generated, but failed to send via Twilio.')
+        }
+      } catch (e) {
+        alert('Rent Bill generated, but Twilio API error occurred.')
+      }
     } else {
       alert('Failed to generate invoice.')
     }
@@ -295,7 +309,21 @@ export default function TenantsPage() {
     
     setEbGenerating(false);
     if (res.ok) {
-      alert('EB Bill generated successfully! Go to Invoices tab.');
+      const invoice = await res.json();
+      try {
+        const waRes = await fetch('/api/whatsapp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invoiceId: invoice.id, useTwilio: true })
+        })
+        if (waRes.ok) {
+          alert('EB Bill generated and sent automatically via Twilio WhatsApp!');
+        } else {
+          alert('EB Bill generated, but failed to send via Twilio.');
+        }
+      } catch (e) {
+        alert('EB Bill generated, but Twilio API error occurred.');
+      }
       setEbModalOpen(false);
       fetchTenants();
     } else {
