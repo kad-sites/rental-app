@@ -869,3 +869,13 @@ input[type="file"]::file-selector-button:hover {
   20% { left: 200%; }
   100% { left: 200%; }
 }
+
+/* Remove arrows from number inputs */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
