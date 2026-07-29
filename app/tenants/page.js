@@ -241,7 +241,7 @@ export default function TenantsPage() {
       
       if (finalRefund < 0) {
         const amountDue = Math.abs(finalRefund);
-        const upiId = process.env.NEXT_PUBLIC_UPI_ID || 'zohebkarizo-1@okaxis';
+        const upiId = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
         const upiUrl = `upi://pay?pa=${upiId}&pn=KirayaPay&cu=INR`;
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`;
         text += `\n\n*Amount Due: ₹\u200B${amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nPlease pay the pending amount by clicking this QR code link:\n${qrUrl}\n\nThank you for staying with us!`;

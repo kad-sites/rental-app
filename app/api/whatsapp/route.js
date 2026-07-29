@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER; 
-const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'zohebkarizo-1@okaxis';
+const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
 
 export async function POST(request) {
   try {
