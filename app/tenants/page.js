@@ -907,7 +907,7 @@ export default function TenantsPage() {
                                 <button 
                                   className="btn btn-success" 
                                   style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center'}}
-                                  onClick={() => handleToggleActive(t.id, t.isActive)}
+                                  onClick={() => t.isActive ? openVacateModal(t) : handleToggleActive(t.id, t.isActive)}
                                 >
                                   {t.isActive ? 'Vacate' : 'Restore'}
                                 </button>
