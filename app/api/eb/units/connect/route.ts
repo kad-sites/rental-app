@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { setRelayStatus } from '@/lib/tuya';
-import { sendWhatsAppAlert } from '@/lib/twilioEB';
+import { sendWhatsAppAlert, formatWhatsAppNumber } from '@/lib/twilioEB';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
       return tenantHouseNum === unitHouseNum && tenantUnitNum === unitNum;
     });
 
-    const phoneNumberToAlert = matchedTenant?.phone ? `+91${matchedTenant.phone}` : unit.phoneNumber;
+    const phoneNumberToAlert = formatWhatsAppNumber(matchedTenant?.phone || unit.phoneNumber);
 
     // Send WhatsApp confirmation to tenant if they have a phone number
     if (phoneNumberToAlert) {

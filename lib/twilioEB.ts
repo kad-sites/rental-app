@@ -7,6 +7,15 @@ const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATSAPP_NUMBER || '+141552388
 
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
+export function formatWhatsAppNumber(phone: string | null | undefined): string | null {
+  if (!phone) return null;
+  const cleanPhone = phone.replace(/[^\d+]/g, '');
+  if (cleanPhone.startsWith('+')) return cleanPhone;
+  // Fallback for Indian numbers lacking + or +91
+  const last10 = cleanPhone.slice(-10);
+  return `+91${last10}`;
+}
+
 /**
  * Sends a WhatsApp message to the tenant.
  * Uses dummy console.log if keys are not set.
