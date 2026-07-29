@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import MarkPaidButton from './MarkPaidButton'
 import QRDisplay from './QRDisplay'
+import CopyUpiBox from './CopyUpiBox'
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -49,8 +50,8 @@ export default async function PaymentPage({ params }) {
   // Read UPI ID from environment variables, fallback if missing
   const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
   
-  // Standard universal UPI link (used for QR code and iOS fallback). Amount removed for manual entry.
-  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&cu=INR`
+  // Standard universal UPI link (used for QR code and iOS fallback). Restored prefilled amount.
+  const upiUrl = `upi://pay?pa=${UPI_ID}&pn=KirayaPay&am=${invoice.amountDue}&cu=INR`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`
 
   // Generate a unique filename for the downloaded QR code
@@ -86,16 +87,9 @@ export default async function PaymentPage({ params }) {
           </div>
         ) : (
           <>
-            <QRDisplay qrUrl={qrUrl} fileName={downloadFileName} />
+            <CopyUpiBox upiId={UPI_ID} />
 
-            <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-              <a href={upiUrl} className="btn btn-success" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                🚀 Pay Now using UPI App
-              </a>
-              <p style={{ margin: '0.75rem 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                (Tap to open GPay, PhonePe, Paytm, etc.)
-              </p>
-            </div>
+            <QRDisplay qrUrl={qrUrl} fileName={downloadFileName} />
             
             <MarkPaidButton invoiceId={invoice.id} />
           </>
