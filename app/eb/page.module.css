@@ -95,9 +95,9 @@
   background-color: transparent;
   color: var(--text-muted);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
@@ -120,7 +120,7 @@
 
 .unitName {
   font-weight: 500;
-  color: white;
+  color: var(--text-main);
 }
 
 .status {
@@ -149,8 +149,8 @@
 
 .dataValue {
   font-variant-numeric: tabular-nums; 
-  font-weight: 600;
-  color: white; /* Matches screenshot amount value color */
+  font-weight: 500;
+  color: var(--text-main);
 }
 
 .dataValue.low {
@@ -167,7 +167,7 @@
 .subtext {
   font-size: 0.75rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 400;
   margin-top: 0.2rem;
 }
 
