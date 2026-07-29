@@ -208,13 +208,13 @@
 }
 
 .rechargeInput {
-  width: 100px;
-  padding: 0.5rem 0.75rem;
+  width: 90px;
+  padding: 0.4rem 0.6rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.2);
   color: var(--text-main);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   transition: all 0.2s;
   font-family: inherit;
 }
@@ -226,14 +226,16 @@
 }
 
 .rechargeBtn {
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   background: transparent;
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 4px;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   transition: all 0.2s;
+  min-width: 80px;
+  cursor: pointer;
 }
 
 .rechargeBtn:hover {
@@ -286,6 +288,31 @@
   background: rgba(16, 185, 129, 0.1);
   color: #10b981;
   border-color: #10b981;
+}
+
+.bypassBtn {
+  background: transparent;
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.bypassBtn:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.bypassBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--border-color);
+  color: var(--text-muted);
 }
 
 .loading {

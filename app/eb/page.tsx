@@ -214,12 +214,11 @@ export default function Dashboard() {
                       Disconnect
                     </button>
                   )}
-                  <button  
+                  <button 
                     className={styles.bypassBtn}
                     onClick={() => handleBypass(unit.id)}
                     disabled={unit.status !== 'offline'}
                     title="Bypass Power for Maintenance"
-                    style={{ backgroundColor: unit.status === 'offline' ? '#f59e0b' : '#4b5563', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', border: 'none', cursor: unit.status === 'offline' ? 'pointer' : 'not-allowed', fontSize: '0.85rem', fontWeight: 600 }}
                   >
                     Bypass
                   </button>
