@@ -62,7 +62,7 @@ export default async function PaymentPage({ params }) {
   const downloadFileName = `QR_${billType}_${safeTenantName}_${monthYear}.png`;
 
   return (
-    <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '1rem' }}>
+    <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', minHeight: '100vh', padding: '2rem 1rem' }}>
       <div className="glass-panel animate-fade-in" style={{ maxWidth: '400px', width: '100%', textAlign: 'center', padding: '1.5rem 1rem' }}>
         <h1 style={{ fontSize: '1.1rem', margin: '0 0 0.5rem 0' }}>
           {invoice.type === 'EB' ? 'Electricity Bill' : 'Rent Payment'} for {invoice.tenant?.name || 'Tenant'}
