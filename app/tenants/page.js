@@ -1033,14 +1033,38 @@ export default function TenantsPage() {
                   style={{width: '100%', marginBottom: '0.5rem'}}
                 />
                 {parseFloat(customDeductions) > 0 && (
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    value={customDeductionReason}
-                    onChange={(e) => setCustomDeductionReason(e.target.value)}
-                    placeholder="Reason for deduction"
-                    style={{width: '100%'}}
-                  />
+                  <>
+                    <div style={{display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.5rem'}}>
+                      {['Cleaning', 'Electrical Damage', 'Wall Damage', 'Painting', 'Plumbing', 'Key Replacement'].map(reason => (
+                        <button 
+                          key={reason}
+                          type="button"
+                          className="badge"
+                          style={{
+                            background: customDeductionReason === reason ? 'var(--primary-color)' : 'rgba(255,255,255,0.05)',
+                            color: customDeductionReason === reason ? '#fff' : 'var(--text-secondary)',
+                            border: '1px solid',
+                            borderColor: customDeductionReason === reason ? 'var(--primary-color)' : 'var(--border-color)',
+                            cursor: 'pointer',
+                            fontSize: '0.75rem',
+                            padding: '0.3rem 0.6rem',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onClick={() => setCustomDeductionReason(reason)}
+                        >
+                          {reason}
+                        </button>
+                      ))}
+                    </div>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      value={customDeductionReason}
+                      onChange={(e) => setCustomDeductionReason(e.target.value)}
+                      placeholder="Or type custom reason..."
+                      style={{width: '100%'}}
+                    />
+                  </>
                 )}
               </div>
               
