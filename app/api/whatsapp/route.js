@@ -62,7 +62,7 @@ export async function POST(request) {
       
       const msg = await client.messages.create({
         body: messageBody,
-        from: twilioPhoneNumber,
+        from: twilioPhoneNumber.startsWith('whatsapp:') ? twilioPhoneNumber : `whatsapp:${twilioPhoneNumber}`,
         to: `whatsapp:${phone}`,
         mediaUrl: [qrApiUrl]
       })
