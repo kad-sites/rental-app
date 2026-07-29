@@ -4,9 +4,10 @@ export type Unit = {
   name: string;
   balance: number;
   totalConsumed: number;
-  status: 'online' | 'offline';
+  status: 'online' | 'offline' | 'maintenance';
   deviceId: string; // Tuya Device ID
   phoneNumber: string; // Tenant Phone Number
+  bypassTimestamp?: number; // Epoch time when bypass was activated
 };
 
 // Mock in-memory database

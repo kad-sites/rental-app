@@ -10,7 +10,7 @@ type Unit = {
   tenantName?: string;
   balance: number;
   totalConsumed: number;
-  status: 'online' | 'offline';
+  status: 'online' | 'offline' | 'maintenance';
 };
 
 export default function Dashboard() {
@@ -101,6 +101,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleBypass = async (id: number) => {
+    if (!confirm('Enable Maintenance Bypass? This will turn power ON instantly for cleaning/repairs.')) return;
+    
+    try {
+      const res = await fetch('/api/eb/units/bypass', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        fetchUnits();
+        alert('Maintenance mode activated. Power is ON.');
+      }
+    } catch (error) {
+      console.error('Bypass failed', error);
+    }
+  };
+
   if (loading) return <div className={styles.loading}>Loading Dashboard...</div>;
 
   // Group units by house
@@ -132,7 +151,7 @@ export default function Dashboard() {
                   {unit.tenantName ? `${unit.tenantName}: ${unit.name}` : unit.name}
                 </td>
                 <td>
-                  <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : styles.statusOffline}`}>
+                  <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : unit.status === 'maintenance' ? styles.statusMaintenance : styles.statusOffline}`}>
                     {unit.status}
                   </span>
                 </td>
@@ -166,6 +185,15 @@ export default function Dashboard() {
                     title="Manually Disconnect Power"
                   >
                     Disconnect
+                  </button>
+                  <button 
+                    className={styles.bypassBtn}
+                    onClick={() => handleBypass(unit.id)}
+                    disabled={unit.status !== 'offline'}
+                    title="Bypass Power for Maintenance"
+                    style={{ backgroundColor: unit.status === 'offline' ? '#f59e0b' : '#4b5563', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', border: 'none', cursor: unit.status === 'offline' ? 'pointer' : 'not-allowed', fontSize: '0.85rem', fontWeight: 600 }}
+                  >
+                    Bypass
                   </button>
                 </div>
               </td>

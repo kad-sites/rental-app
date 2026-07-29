@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { unitsDB } from '@/lib/eb-db';
 import { setRelayStatus } from '@/lib/tuya';
+import { sendWhatsAppAlert } from '@/lib/twilioEB';
 
 export async function POST(request: Request) {
   try {
@@ -24,6 +25,14 @@ export async function POST(request: Request) {
     
     // Trigger Tuya to turn OFF the MCB
     await setRelayStatus(unit.deviceId, false);
+
+    // Send WhatsApp confirmation to tenant if they have a phone number
+    if (unit.phoneNumber) {
+      await sendWhatsAppAlert(
+        unit.phoneNumber, 
+        `🚨 *Electricity Disconnected*\nYour meter for ${unit.house} - ${unit.name} has been manually disconnected by the landlord.\nPlease contact Aziz Rentals for assistance.`
+      );
+    }
 
     return NextResponse.json({ success: true, unit });
   } catch (error) {
