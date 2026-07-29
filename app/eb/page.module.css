@@ -139,6 +139,8 @@
   letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   border: 1px solid;
 }
 

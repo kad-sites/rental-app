@@ -120,6 +120,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleConnect = async (id: number) => {
+    if (!confirm('Are you sure you want to manually connect this meter to the billing system? Power will be turned ON.')) return;
+    
+    try {
+      const res = await fetch('/api/eb/units/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        fetchUnits();
+        alert('Meter connected successfully.');
+      }
+    } catch (error) {
+      console.error('Connect failed', error);
+    }
+  };
+
   if (loading) return <div className={styles.loading}>Loading Dashboard...</div>;
 
   // Group units by house
@@ -178,15 +197,24 @@ export default function Dashboard() {
                   >
                     Recharge
                   </button>
-                  <button 
-                    className={styles.disconnectBtn}
-                    onClick={() => handleDisconnect(unit.id)}
-                    disabled={unit.status === 'offline'}
-                    title="Manually Disconnect Power"
-                  >
-                    Disconnect
-                  </button>
-                  <button 
+                  {unit.status === 'offline' ? (
+                    <button 
+                      onClick={() => handleConnect(unit.id)}
+                      title="Manually Connect Power"
+                      style={{ backgroundColor: '#10b981', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
+                    >
+                      Connect
+                    </button>
+                  ) : (
+                    <button 
+                      className={styles.disconnectBtn}
+                      onClick={() => handleDisconnect(unit.id)}
+                      title="Manually Disconnect Power"
+                    >
+                      Disconnect
+                    </button>
+                  )}
+                  <button  
                     className={styles.bypassBtn}
                     onClick={() => handleBypass(unit.id)}
                     disabled={unit.status !== 'offline'}

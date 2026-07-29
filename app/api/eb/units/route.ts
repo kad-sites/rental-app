@@ -54,8 +54,8 @@ export async function POST(request: Request) {
     // Update balance
     unit.balance += rechargeKwh;
     
-    // If balance is now > 0 and was offline, turn it online and switch Tuya relay ON
-    if (unit.balance > 0 && unit.status === 'offline') {
+    // If balance is now > 0 and was offline or in maintenance, turn it online and switch Tuya relay ON
+    if (unit.balance > 0 && (unit.status === 'offline' || unit.status === 'maintenance')) {
       unit.status = 'online';
       
       // Trigger Tuya to turn ON the MCB
