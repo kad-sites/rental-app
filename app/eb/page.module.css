@@ -240,8 +240,8 @@
 .disconnectBtn {
   padding: 0.5rem 1rem;
   background: rgba(239, 68, 68, 0.15);
-  color: var(--status-offline);
-  border: 1px solid var(--status-offline);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--warning-color);
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.875rem;
@@ -250,7 +250,7 @@
 }
 
 .disconnectBtn:hover {
-  background: var(--status-offline);
+  background: var(--warning-color);
   color: white;
   transform: translateY(-1px);
 }
