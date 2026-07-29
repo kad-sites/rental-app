@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { unitsDB } from '@/lib/eb-db'
 import { setRelayStatus } from '@/lib/tuya'
 
 export async function POST(request, { params }) {
@@ -48,14 +47,20 @@ export async function POST(request, { params }) {
       const tenantHouseNum = updatedTenant.houseNo.replace(/\D/g, '');
       const tenantUnitNum = updatedTenant.unitNo.replace(/\D/g, '');
 
-      const meter = unitsDB.find(u => {
+      // Fetch all meters to find the match
+      const meters = await prisma.ebMeter.findMany();
+      
+      const meter = meters.find(u => {
         const uHouseNum = u.house.replace(/\D/g, '');
         const uUnitNum = u.name.replace(/\D/g, '');
         return uHouseNum === tenantHouseNum && uUnitNum === tenantUnitNum;
       });
 
       if (meter && meter.status !== 'offline') {
-        meter.status = 'offline';
+        await prisma.ebMeter.update({
+          where: { id: meter.id },
+          data: { status: 'offline' }
+        });
         // Fire Tuya API to cut power (no WhatsApp alert for the client)
         await setRelayStatus(meter.deviceId, false).catch(e => console.error('Tuya disconnect failed on vacate', e));
       }
