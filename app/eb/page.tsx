@@ -165,7 +165,7 @@ export default function Dashboard() {
                     disabled={unit.status === 'offline'}
                     title="Manually Disconnect Power"
                   >
-                    Disconnect Power
+                    Disconnect
                   </button>
                 </div>
               </td>
