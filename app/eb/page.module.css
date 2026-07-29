@@ -141,8 +141,8 @@
     border-color: rgba(16, 185, 129, 0.5);
   }
   50% {
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.9), 0 0 5px rgba(16, 185, 129, 0.4) inset;
-    border-color: rgba(16, 185, 129, 1);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.9), 0 0 5px rgba(16, 185, 129, 0.4) inset;
+    border-color: rgba(16, 185, 129, 0.8);
   }
 }
 
@@ -152,21 +152,21 @@
     border-color: rgba(239, 68, 68, 0.5);
   }
   50% {
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.9), 0 0 5px rgba(239, 68, 68, 0.4) inset;
-    border-color: rgba(239, 68, 68, 1);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.9), 0 0 5px rgba(239, 68, 68, 0.4) inset;
+    border-color: rgba(239, 68, 68, 0.8);
   }
 }
 
 .statusOnline {
   color: var(--status-online);
   background: rgba(16, 185, 129, 0.1);
-  animation: pulseGlowOnline 1.5s infinite ease-in-out;
+  animation: pulseGlowOnline 2s infinite ease-in-out;
 }
 
 .statusOffline {
   color: var(--status-offline);
   background: rgba(239, 68, 68, 0.1);
-  animation: pulseGlowOffline 1.5s infinite ease-in-out;
+  animation: pulseGlowOffline 2s infinite ease-in-out;
 }
 
 .dataValue {
