@@ -114,7 +114,7 @@ export default function Dashboard() {
                     {unit.status}
                   </span>
                 </td>
-                <td className={`${styles.dataValue} ${unit.balance <= 10 ? styles.low : ''}`}>
+                <td className={`${styles.dataValue} ${unit.balance < 5 ? styles.critical : unit.balance < 10 ? styles.warning : ''}`}>
                   <div>{unit.balance.toFixed(2)} kWh</div>
                   <div className={styles.subtext}>₹{balanceRs} left</div>
                 </td>

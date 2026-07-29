@@ -175,9 +175,14 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-.dataValue.low {
-  color: var(--status-offline);
-  font-weight: 600;
+.dataValue.warning {
+  color: #f59e0b; /* Amber/Orange for < 10 */
+  font-weight: 500;
+}
+
+.dataValue.critical {
+  color: #ef4444; /* Red for < 5 */
+  font-weight: 500;
 }
 
 .actionCell {
