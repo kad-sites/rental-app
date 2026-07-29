@@ -19,16 +19,15 @@ export async function GET() {
     }
     
     if (unit.status === 'maintenance') {
-      // Send reminder to landlord every 1 hour (3600000 ms)
-      // For demo testing, we will check if 60 seconds have passed, but use 1 hour in production.
+      // Send reminder to landlord every 12 hours (43200000 ms)
       const now = Date.now();
-      const ONE_HOUR = 60 * 60 * 1000;
-      if (unit.bypassTimestamp && (now - unit.bypassTimestamp) >= ONE_HOUR) {
+      const TWELVE_HOURS = 12 * 60 * 60 * 1000;
+      if (unit.bypassTimestamp && (now - unit.bypassTimestamp) >= TWELVE_HOURS) {
         await sendWhatsAppAlert(
           '+919876543210', // Replace with actual Landlord phone number
-          `🔔 *Landlord Reminder*\nThe power for ${unit.house} - ${unit.name} has been in MAINTENANCE Bypass Mode for over an hour.`
+          `🔔 *Landlord Reminder*\nThe power for ${unit.house} - ${unit.name} has been in MAINTENANCE Bypass Mode for over 12 hours.`
         );
-        // Reset timestamp so we remind again in another hour
+        // Reset timestamp so we remind again in another 12 hours
         unit.bypassTimestamp = now;
       }
       continue; // Skip balance deduction while in maintenance
