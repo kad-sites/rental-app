@@ -242,7 +242,7 @@ export default function TenantsPage() {
       if (finalRefund < 0) {
         const amountDue = Math.abs(finalRefund);
         const upiId = process.env.NEXT_PUBLIC_UPI_ID || 'nazma.69256@okaxis';
-        text += `\n\n*Amount Due: ₹\u200B${amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nPlease pay the pending amount to:\nUPI ID: ${upiId}\n\nThank you for staying with us!`;
+        text += `\n\n*Amount Due: ₹\u200B${amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nPlease pay the pending amount to this UPI ID:\n\`\`\`${upiId}\`\`\`\n\nThank you for staying with us!`;
       } else {
         text += `\n\n*Final Refund Amount: ₹\u200B${finalRefund.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\nThank you for staying with us!`;
       }
