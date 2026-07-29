@@ -23,6 +23,18 @@ export default async function PaymentPage({ params }) {
     notFound()
   }
 
+  // Block WhatsApp crawler from fetching link previews, so no header appears in the chat
+  const headersList = await headers()
+  const userAgent = headersList.get('user-agent') || ''
+  
+  const isWhatsAppCrawler = (
+    userAgent.includes('WhatsApp/') && !userAgent.includes('Mozilla/') && !userAgent.includes('AppleWebKit/')
+  ) || userAgent.includes('facebookexternalhit') || userAgent.includes('Facebot')
+  
+  if (isWhatsAppCrawler) {
+    notFound()
+  }
+
   const invoice = await prisma.invoice.findUnique({
     where: { id: invoiceId },
     include: { tenant: true }
