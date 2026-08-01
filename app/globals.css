@@ -98,7 +98,7 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2.5rem;
+  padding: 1.2rem 2.5rem;
   background: rgba(2, 6, 23, 0.8);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
@@ -528,9 +528,9 @@ input[type="file"]::file-selector-button:hover {
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .navbar { flex-direction: column; padding: max(env(safe-area-inset-top), 32px) 1.5rem 1.2rem 1.5rem; gap: 1.5rem; }
   .container { padding: 1.5rem 1rem 0 1rem; }
-  .navbar { flex-direction: column; padding: 1.5rem; gap: 1.5rem; }
   .nav-links { gap: 1.5rem; font-size: 1rem; flex-wrap: wrap; justify-content: center; width: 100%; margin: 0; }
   .flex-between { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
   h1 { font-size: 1.6rem; margin-bottom: 0; }
@@ -667,9 +667,8 @@ input[type="file"]::file-selector-button:hover {
   border-top: 1px solid rgba(255,255,255,0.05);
   display: flex;
   justify-content: space-around;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 1rem max(env(safe-area-inset-bottom), 16px) 1rem;
   z-index: 1000;
-  padding-bottom: env(safe-area-inset-bottom, 1rem); /* iPhone notch support */
 }
 .bottom-nav-item {
   display: flex;

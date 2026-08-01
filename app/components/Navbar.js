@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header */}
-      <nav className="navbar" style={{padding: '1.2rem 1.5rem', background: '#050505', borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
+      <nav className="navbar" style={{background: '#050505', borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
         <a href="/" className="logo" style={{display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none'}}>
           <div style={{
             background: 'var(--primary-color)', 

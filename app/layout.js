@@ -8,6 +8,14 @@ export const metadata = {
   description: 'Manage rentals, deposits, and WhatsApp invoices easily.',
 }
 
+export const viewport = {
+  themeColor: '#050505',
+  viewportFit: 'cover',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
