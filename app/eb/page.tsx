@@ -180,23 +180,23 @@ export default function Dashboard() {
             
             return (
               <tr key={unit.id}>
-                <td className={styles.unitName}>
+                <td data-label="Unit Name" className={styles.unitName}>
                   {unit.tenantName ? `${unit.name} : ${unit.tenantName}` : unit.name}
                 </td>
-                <td>
+                <td data-label="Status">
                   <span className={`${styles.status} ${unit.status === 'online' ? styles.statusOnline : styles.statusOffline}`}>
                     {unit.status === 'online' ? 'ONLINE' : 'OFFLINE'}
                   </span>
                 </td>
-                <td className={`${styles.dataValue} ${unit.balance < 5 ? styles.critical : unit.balance < 10 ? styles.warning : ''}`}>
+                <td data-label="Available Balance" className={`${styles.dataValue} ${unit.balance < 5 ? styles.critical : unit.balance < 10 ? styles.warning : ''}`}>
                   <div>{unit.balance.toFixed(2)} kWh</div>
                   <div className={styles.subtext}>₹{balanceRs} left</div>
                 </td>
-                <td className={styles.dataValue}>
+                <td data-label="Lifetime Consumed" className={styles.dataValue}>
                   <div>{unit.totalConsumed.toFixed(2)} kWh</div>
                   <div className={styles.subtext}>₹{consumedRs} total</div>
                 </td>
-                <td>
+                <td data-label="Action">
                 <div className={styles.actionCell} style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                   <input  
                     type="number" 
