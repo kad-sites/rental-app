@@ -7,9 +7,17 @@ export default function InvoicesPage() {
   const [generating, setGenerating] = useState(false)
   const [sendingId, setSendingId] = useState(null)
   const [previewInvoice, setPreviewInvoice] = useState(null)
+  
+  // Mobile filtering state
+  const [isMobile, setIsMobile] = useState(false)
+  const [activeTab, setActiveTab] = useState('RENT_PENDING') // RENT_PENDING, EB_PENDING
 
   useEffect(() => {
     fetchInvoices()
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const fetchInvoices = async () => {
@@ -187,6 +195,14 @@ export default function InvoicesPage() {
     }
   }
 
+  const filteredInvoices = invoices.filter(inv => {
+    if (!isMobile) return true; // Desktop shows all
+    
+    if (activeTab === 'RENT_PENDING') return inv.type === 'RENT' && inv.status !== 'PAID';
+    if (activeTab === 'EB_PENDING') return inv.type === 'EB' && inv.status !== 'PAID';
+    return true;
+  });
+
   return (
     <main className="container animate-fade-in">
       <div className="flex-between">
@@ -212,6 +228,27 @@ export default function InvoicesPage() {
 
       <div className="glass-panel">
         <h2 style={{marginTop: 0, marginBottom: '1.5rem'}}>Recent Invoices</h2>
+        
+        {/* Mobile Tabs */}
+        {isMobile && (
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '0.4rem', borderRadius: '12px' }}>
+            <button 
+              className="btn" 
+              style={{ flex: 1, padding: '0.5rem', borderRadius: '8px', border: 'none', background: activeTab === 'RENT_PENDING' ? 'var(--primary-color)' : 'transparent', color: activeTab === 'RENT_PENDING' ? '#000' : 'var(--text-secondary)' }}
+              onClick={() => setActiveTab('RENT_PENDING')}
+            >
+              Rent Pending
+            </button>
+            <button 
+              className="btn" 
+              style={{ flex: 1, padding: '0.5rem', borderRadius: '8px', border: 'none', background: activeTab === 'EB_PENDING' ? 'var(--primary-color)' : 'transparent', color: activeTab === 'EB_PENDING' ? '#000' : 'var(--text-secondary)' }}
+              onClick={() => setActiveTab('EB_PENDING')}
+            >
+              EB Pending
+            </button>
+          </div>
+        )}
+
         {loading ? <p>Loading...</p> : (
           <div style={{overflowX: 'auto'}}>
             <table className="data-table tenants-table">
@@ -226,7 +263,7 @@ export default function InvoicesPage() {
                 </tr>
               </thead>
               <tbody>
-                {invoices.map(inv => (
+                {filteredInvoices.map(inv => (
                   <tr key={inv.id}>
                     <td data-label="DATE">{new Date(inv.createdAt).toLocaleDateString('en-IN')}</td>
                     <td data-label="TENANT">{inv.tenant?.name || 'Unknown'}</td>
@@ -329,8 +366,10 @@ export default function InvoicesPage() {
                     </td>
                   </tr>
                 ))}
-                {invoices.length === 0 && (
-                  <tr><td colSpan="6" style={{textAlign: 'center', opacity: 0.5}}>No invoices generated yet.</td></tr>
+                {filteredInvoices.length === 0 && (
+                  <tr><td colSpan="6" style={{textAlign: 'center', opacity: 0.5}}>
+                    {isMobile ? `No ${activeTab === 'EB_PENDING' ? 'EB' : 'Rent'} pending invoices.` : 'No invoices generated yet.'}
+                  </td></tr>
                 )}
               </tbody>
             </table>
