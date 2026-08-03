@@ -736,11 +736,11 @@ input[type="file"]::file-selector-button:hover {
 }
 .stat-card-app .watermark {
   position: absolute;
-  right: -5px;
+  left: -5px;
   bottom: -5px;
   opacity: 0.1;
-  width: 60px;
-  height: 60px;
+  width: 42px;
+  height: 42px;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
