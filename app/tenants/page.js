@@ -852,7 +852,7 @@ export default function TenantsPage() {
               style={{ padding: '0.5rem 0.8rem', fontSize: '0.9rem', flex: 1, textAlign: 'center' }}
             >
               <span className="hide-on-mobile">Active Tenants</span>
-              <span className="hide-on-desktop">Active only</span>
+              <span className="hide-on-desktop">Active</span>
             </button>
             <button 
               className={`btn ${!showActive ? 'btn-success' : 'btn-outline'}`} 
@@ -860,7 +860,7 @@ export default function TenantsPage() {
               style={{ padding: '0.5rem 0.8rem', fontSize: '0.9rem', flex: 1, textAlign: 'center' }}
             >
               <span className="hide-on-mobile">Vacated (Past Tenants)</span>
-              <span className="hide-on-desktop">Vacated only</span>
+              <span className="hide-on-desktop">Vacated</span>
             </button>
           </div>
 
