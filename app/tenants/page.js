@@ -845,18 +845,22 @@ export default function TenantsPage() {
 
         {/* Tenants List */}
         <div className="glass-panel">
-          <div style={{display: 'flex', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem'}}>
+          <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem'}}>
             <button 
               className={`btn ${showActive ? 'btn-success' : 'btn-outline'}`} 
               onClick={() => setShowActive(true)}
+              style={{ padding: '0.5rem 0.8rem', fontSize: '0.9rem', flex: 1, textAlign: 'center' }}
             >
-              Active Tenants
+              <span className="hide-on-mobile">Active Tenants</span>
+              <span className="hide-on-desktop">Active only</span>
             </button>
             <button 
               className={`btn ${!showActive ? 'btn-success' : 'btn-outline'}`} 
               onClick={() => setShowActive(false)}
+              style={{ padding: '0.5rem 0.8rem', fontSize: '0.9rem', flex: 1, textAlign: 'center' }}
             >
-              Vacated (Past Tenants)
+              <span className="hide-on-mobile">Vacated (Past Tenants)</span>
+              <span className="hide-on-desktop">Vacated only</span>
             </button>
           </div>
 
