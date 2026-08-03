@@ -214,7 +214,7 @@ export default function InvoicesPage() {
         <h2 style={{marginTop: 0, marginBottom: '1.5rem'}}>Recent Invoices</h2>
         {loading ? <p>Loading...</p> : (
           <div style={{overflowX: 'auto'}}>
-            <table className="data-table">
+            <table className="data-table tenants-table">
               <thead>
                 <tr>
                   <th>DATE</th>
@@ -228,25 +228,25 @@ export default function InvoicesPage() {
               <tbody>
                 {invoices.map(inv => (
                   <tr key={inv.id}>
-                    <td>{new Date(inv.createdAt).toLocaleDateString('en-IN')}</td>
-                    <td>{inv.tenant?.name || 'Unknown'}</td>
-                    <td>
+                    <td data-label="DATE">{new Date(inv.createdAt).toLocaleDateString('en-IN')}</td>
+                    <td data-label="TENANT">{inv.tenant?.name || 'Unknown'}</td>
+                    <td data-label="AMOUNT">
                       ₹{inv.amountDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}
                       {inv.type === 'EB' && <span className="eb-badge" style={{marginLeft: '8px', fontSize: '0.7rem', padding: '2px 5px', background: '#e0f2fe', color: '#0369a1', borderRadius: '4px'}}>⚡ EB</span>}
                     </td>
-                    <td>
+                    <td data-label="STATUS">
                       <span className={`badge ${inv.status === 'PAID' ? 'badge-paid' : inv.status === 'VERIFYING' ? 'badge-warning' : 'badge-pending'}`}>
                         {inv.status === 'PENDING' ? 'Pending' : inv.status === 'PAID' ? 'Paid' : 'Verifying'}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="WHATSAPP">
                       {inv.whatsappSent ? (
                         <span style={{color: 'var(--text-success)'}}>✓ Sent</span>
                       ) : (
                         <span style={{color: 'var(--text-secondary)'}}>Not Sent</span>
                       )}
                     </td>
-                    <td style={{display: 'flex', gap: '0.5rem', whiteSpace: 'nowrap'}}>
+                    <td data-label="ACTIONS" style={{display: 'flex', gap: '0.5rem', whiteSpace: 'nowrap', flexWrap: 'wrap'}}>
                       {inv.status === 'PENDING' && (
                         <button 
                           className="btn btn-outline" 
