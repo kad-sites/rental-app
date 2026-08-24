@@ -1,5 +1,5 @@
 "use client"
-import { useState, Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ClientInfoModal from './ClientInfoModal'
@@ -114,6 +114,17 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
   const [selectedInvoiceId, setSelectedInvoiceId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        setShowCashModal(false);
+        setInfoModalTenant(null);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   // Group pending invoices by tenant for the modal
   const pendingByTenant = pendingInvoices.reduce((acc, inv) => {
     if (!acc[inv.tenantId]) {
@@ -172,11 +183,27 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
           zIndex: 1000,
           padding: '1rem'
         }}>
-          <div className="glass-panel" style={{width: '100%', maxWidth: '400px'}}>
-            <h2 style={{color: '#fff', marginBottom: '1rem'}}>Record Cash Payment</h2>
+          <div className="glass-panel" style={{width: '100%', maxWidth: '400px', position: 'relative'}}>
+            <button 
+              onClick={() => setShowCashModal(false)}
+              style={{
+                position: 'absolute', top: '15px', right: '15px', 
+                background: 'transparent', border: 'none', 
+                color: 'var(--text-secondary)', fontSize: '1.5rem', 
+                cursor: 'pointer', padding: '0'
+              }}
+            >
+              &times;
+            </button>
+            <h2 style={{color: '#fff', marginBottom: '1rem', paddingRight: '2rem'}}>Record Cash Payment</h2>
             
             {tenantsWithPending.length === 0 ? (
-              <p style={{color: 'var(--text-success)'}}>No pending invoices exist!</p>
+              <>
+                <p style={{color: 'var(--text-success)', marginBottom: '1.5rem'}}>No pending invoices exist!</p>
+                <button type="button" className="btn btn-outline" style={{width: '100%'}} onClick={() => setShowCashModal(false)}>
+                  Close
+                </button>
+              </>
             ) : (
               <form onSubmit={handleGlobalMarkPaid}>
                 <div className="form-group full-width">
