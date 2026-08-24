@@ -397,7 +397,7 @@ export default function TenantsPage() {
             </h2>
             {!editingId && (
               <div style={{
-                background: 'rgba(255,255,255,0.1)', 
+                background: 'rgba(0,0,0,0.1)', 
                 borderRadius: '50%', 
                 width: '32px', height: '32px', 
                 display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -425,7 +425,7 @@ export default function TenantsPage() {
             </div>
 
             {roommateCount >= 1 && (
-              <div className="animate-fade-in" style={{position: 'relative', marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
+              <div className="animate-fade-in" style={{position: 'relative', marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
                 <button type="button" style={{position: 'absolute', top: '8px', right: '8px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px'}} onClick={() => {
                   if (roommateCount === 2) {
                     setFormData({...formData, roommate1Name: formData.roommate2Name, roommate1Phone: formData.roommate2Phone, roommate2Name: '', roommate2Phone: '91'});
@@ -541,7 +541,7 @@ export default function TenantsPage() {
                             setFiles({...files, [type]: null});
                             const input = document.getElementById('r1-unified-file-upload');
                             if (input && input.getAttribute('data-doctype') === type) input.value = '';
-                          }} style={{background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', padding: '0 2px'}}>✖</button>
+                          }} style={{background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', padding: '0 2px'}}>✖</button>
                         </span>
                       )
                     })}
@@ -551,7 +551,7 @@ export default function TenantsPage() {
             )}
 
             {roommateCount >= 2 && (
-              <div className="animate-fade-in" style={{position: 'relative', marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
+              <div className="animate-fade-in" style={{position: 'relative', marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
                 <button type="button" style={{position: 'absolute', top: '8px', right: '8px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px'}} onClick={() => {
                   setFormData({...formData, roommate2Name: '', roommate2Phone: '91'});
                   setRoommateCount(1);
@@ -660,7 +660,7 @@ export default function TenantsPage() {
                             setFiles({...files, [type]: null});
                             const input = document.getElementById('r2-unified-file-upload');
                             if (input && input.getAttribute('data-doctype') === type) input.value = '';
-                          }} style={{background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', padding: '0 2px'}}>✖</button>
+                          }} style={{background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', padding: '0 2px'}}>✖</button>
                         </span>
                       )
                     })}
@@ -822,7 +822,7 @@ export default function TenantsPage() {
                       setFiles({...files, [type]: null});
                       const input = document.getElementById('unified-file-upload');
                       if (input && input.getAttribute('data-doctype') === type) input.value = '';
-                    }} style={{background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', padding: '0 2px'}}>✖</button>
+                    }} style={{background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', padding: '0 2px'}}>✖</button>
                   </span>
                 )
               })}
@@ -833,7 +833,7 @@ export default function TenantsPage() {
                 {uploading ? 'Processing...' : (editingId ? 'Update Tenant' : 'Add Tenant')}
               </button>
               {editingId && (
-                <button type="button" className="btn" style={{backgroundColor: 'rgba(255,255,255,0.1)'}} onClick={cancelEdit} disabled={uploading}>
+                <button type="button" className="btn" style={{backgroundColor: 'rgba(0,0,0,0.1)'}} onClick={cancelEdit} disabled={uploading}>
                   Cancel
                 </button>
               )}
@@ -889,7 +889,7 @@ export default function TenantsPage() {
                               <div style={{color: 'var(--primary-color)', fontWeight: '600', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.15em', whiteSpace: 'nowrap'}}>
                                 🏡 HOUSE {house === 'Unassigned' ? 'UNASSIGNED' : house}
                               </div>
-                              <div style={{flex: 1, height: '1px', borderBottom: '1px dashed rgba(255,255,255,0.15)'}}></div>
+                              <div style={{flex: 1, height: '1px', borderBottom: '1px dashed rgba(0,0,0,0.15)'}}></div>
                             </div>
                           </td>
                         </tr>
@@ -950,7 +950,7 @@ export default function TenantsPage() {
                                 )}
                                 <button 
                                   className="btn" 
-                                  style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', backgroundColor: '#ef4444', color: '#ffffff'}}
+                                  style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', backgroundColor: '#ef4444', color: 'var(--text-primary)'}}
                                   onClick={() => handleEditClick(t)}
                                 >
                                   Edit
@@ -965,7 +965,7 @@ export default function TenantsPage() {
                                 {!t.isActive && (
                                   <button 
                                     className="btn" 
-                                    style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #444444'}}
+                                    style={{padding: '0.3rem 0.5rem', fontSize: '0.75rem', minWidth: '55px', textAlign: 'center', backgroundColor: '#333333', color: 'var(--text-primary)', border: '1px solid #444444'}}
                                     onClick={() => handleDeleteTenant(t.id)}
                                   >
                                     Delete
@@ -999,7 +999,7 @@ export default function TenantsPage() {
               <button onClick={() => setEbModalOpen(false)} style={{background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem'}}>&times;</button>
             </div>
             
-            <div style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', background: 'rgba(255,255,255,0.03)', padding: '0.8rem', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)'}}>
+            <div style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', background: 'rgba(0,0,0,0.03)', padding: '0.8rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.05)'}}>
               <div style={{marginBottom: '0.4rem'}}>Tenant: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.name}</strong></div>
               <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem'}}>
                 <span>Initial Reading: <strong style={{color: 'var(--text-primary)'}}>{selectedEbTenant.initialMeterReading || 0}</strong></span>
@@ -1084,7 +1084,7 @@ export default function TenantsPage() {
                           type="button"
                           className="badge"
                           style={{
-                            background: customDeductionReason === reason ? 'var(--primary-color)' : 'rgba(255,255,255,0.05)',
+                            background: customDeductionReason === reason ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)',
                             color: customDeductionReason === reason ? '#fff' : 'var(--text-secondary)',
                             border: '1px solid',
                             borderColor: customDeductionReason === reason ? 'var(--primary-color)' : 'var(--border-color)',
@@ -1111,7 +1111,7 @@ export default function TenantsPage() {
                 )}
               </div>
               
-              <hr style={{border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '1rem 0'}} />
+              <hr style={{border: 'none', borderTop: '1px solid rgba(0,0,0,0.1)', margin: '1rem 0'}} />
               
               <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold'}}>
                 <span>Final Refund:</span>
