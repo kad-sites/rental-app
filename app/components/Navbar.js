@@ -11,11 +11,11 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header */}
-      <nav className="navbar" style={{background: '#050505', borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
+      <nav className="navbar" style={{background: 'var(--surface-color)', borderBottom: '1px solid var(--border-color)'}}>
         <a href="/" className="logo" style={{display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none'}}>
           <img src="/logo.png" width="40" height="40" alt="Logo" style={{borderRadius: '8px'}} />
           <span style={{fontSize: '1.4rem'}}>
-            <span style={{color: 'var(--warning-color)', fontWeight: '400'}}>Kiraya</span>
+            <span style={{color: 'var(--text-primary)', fontWeight: '400'}}>Kiraya</span>
             <span style={{color: '#feab03', fontWeight: '800'}}>PE</span>
           </span>
         </a>
