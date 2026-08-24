@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Navbar from './components/Navbar'
 
 export const metadata = {
-  title: 'KirayaPay',
+  title: 'KirayaPE',
   description: 'Manage rentals, deposits, and WhatsApp invoices easily.',
 }
 

@@ -13,20 +13,10 @@ export default function Navbar() {
       {/* Top Header */}
       <nav className="navbar" style={{background: '#050505', borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
         <a href="/" className="logo" style={{display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none'}}>
-          <div style={{
-            background: 'var(--primary-color)', 
-            width: '40px', height: '40px', 
-            borderRadius: '12px', 
-            display: 'flex', justifyContent: 'center', alignItems: 'center'
-          }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </div>
+          <img src="/logo.png" width="40" height="40" alt="Logo" style={{borderRadius: '8px'}} />
           <span style={{fontSize: '1.4rem'}}>
             <span style={{color: 'var(--warning-color)', fontWeight: '400'}}>Kiraya</span>
-            <span style={{color: 'var(--primary-color)', fontWeight: '800'}}>PAY</span>
+            <span style={{color: 'var(--primary-color)', fontWeight: '800'}}>PE</span>
           </span>
         </a>
         
