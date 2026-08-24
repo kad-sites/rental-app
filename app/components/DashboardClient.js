@@ -173,7 +173,7 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
           padding: '1rem'
         }}>
           <div className="glass-panel" style={{width: '100%', maxWidth: '400px'}}>
-            <h2 style={{color: 'var(--text-primary)', marginBottom: '1rem'}}>Record Cash Payment</h2>
+            <h2 style={{color: '#fff', marginBottom: '1rem'}}>Record Cash Payment</h2>
             
             {tenantsWithPending.length === 0 ? (
               <p style={{color: 'var(--text-success)'}}>No pending invoices exist!</p>
@@ -351,7 +351,7 @@ export default function DashboardClient({ activeTenants, pendingInvoices, totalD
                             <div style={{color: 'var(--primary-color)', fontWeight: '600', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.15em', whiteSpace: 'nowrap'}}>
                               🏡 HOUSE {house === 'Unassigned' ? 'UNASSIGNED' : house}
                             </div>
-                            <div style={{flex: 1, height: '1px', borderBottom: '1px dashed rgba(0,0,0,0.15)'}}></div>
+                            <div style={{flex: 1, height: '1px', borderBottom: '1px dashed rgba(255,255,255,0.15)'}}></div>
                           </div>
                         </td>
                       </tr>

@@ -26,7 +26,7 @@ export default function ClientInfoModal({ tenant, onClose }) {
               target={tenant.photoUrl ? "_blank" : "_self"}
               rel="noreferrer"
               className={tenant.photoUrl ? "profile-pic-hover" : ""}
-              style={{textDecoration: 'none', width: '64px', height: '64px', borderRadius: '8px', background: 'rgba(0,0,0,0.05)', border: '2px solid var(--primary-color)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.2)'}}
+              style={{textDecoration: 'none', width: '64px', height: '64px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '2px solid var(--primary-color)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.2)'}}
             >
               {tenant.photoUrl ? (
                 <img src={tenant.photoUrl} alt={tenant.name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
@@ -37,7 +37,7 @@ export default function ClientInfoModal({ tenant, onClose }) {
           </div>
 
           {(tenant.aadharUrl || tenant.passportUrl || tenant.agreementUrl) && (
-            <div style={{marginTop: '1.2rem', paddingTop: '1rem', borderTop: '1px dashed rgba(0,0,0,0.1)', display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center'}}>
+            <div style={{marginTop: '1.2rem', paddingTop: '1rem', borderTop: '1px dashed rgba(255,255,255,0.1)', display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center'}}>
               {tenant.aadharUrl && <a href={tenant.aadharUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{padding: '0.2rem 0.6rem', fontSize: '0.75rem', color: 'var(--text-primary)', borderRadius: '20px'}}><span className="bullet-3d"></span> Aadhar</a>}
               {tenant.passportUrl && <a href={tenant.passportUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{padding: '0.2rem 0.6rem', fontSize: '0.75rem', color: 'var(--text-primary)', borderRadius: '20px'}}><span className="bullet-3d"></span> Passport</a>}
               {tenant.agreementUrl && <a href={tenant.agreementUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{padding: '0.2rem 0.6rem', fontSize: '0.75rem', color: 'var(--text-primary)', borderRadius: '20px'}}><span className="bullet-3d"></span> Agreement</a>}
@@ -47,11 +47,11 @@ export default function ClientInfoModal({ tenant, onClose }) {
 
         {/* Roommates Section */}
         {(tenant.roommate1Name || tenant.roommate2Name) && (
-          <div style={{marginBottom: '1.5rem', padding: '1rem', background: 'rgba(0,0,0,0.03)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
+          <div style={{marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--border-color)'}}>
             <h4 style={{margin: '0 0 0.8rem 0', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px'}}>Roommates</h4>
             
             {tenant.roommate1Name && (
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: tenant.roommate2Name ? '1rem' : '0', paddingBottom: tenant.roommate2Name ? '1rem' : '0', borderBottom: tenant.roommate2Name ? '1px dashed rgba(0,0,0,0.1)' : 'none'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: tenant.roommate2Name ? '1rem' : '0', paddingBottom: tenant.roommate2Name ? '1rem' : '0', borderBottom: tenant.roommate2Name ? '1px dashed rgba(255,255,255,0.1)' : 'none'}}>
                 <div>
                   <div style={{fontWeight: '500'}}>{tenant.roommate1Name}</div>
                   <div style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>+{tenant.roommate1Phone}</div>
@@ -68,7 +68,7 @@ export default function ClientInfoModal({ tenant, onClose }) {
                   target={tenant.roommate1PhotoUrl ? "_blank" : "_self"}
                   rel="noreferrer"
                   className={tenant.roommate1PhotoUrl ? "profile-pic-hover" : ""}
-                  style={{textDecoration: 'none', width: '42px', height: '42px', borderRadius: '6px', background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}
+                  style={{textDecoration: 'none', width: '42px', height: '42px', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}
                 >
                   {tenant.roommate1PhotoUrl ? (
                     <img src={tenant.roommate1PhotoUrl} alt={tenant.roommate1Name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
@@ -97,7 +97,7 @@ export default function ClientInfoModal({ tenant, onClose }) {
                   target={tenant.roommate2PhotoUrl ? "_blank" : "_self"}
                   rel="noreferrer"
                   className={tenant.roommate2PhotoUrl ? "profile-pic-hover" : ""}
-                  style={{textDecoration: 'none', width: '42px', height: '42px', borderRadius: '6px', background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}
+                  style={{textDecoration: 'none', width: '42px', height: '42px', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}
                 >
                   {tenant.roommate2PhotoUrl ? (
                     <img src={tenant.roommate2PhotoUrl} alt={tenant.roommate2Name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
@@ -110,7 +110,7 @@ export default function ClientInfoModal({ tenant, onClose }) {
           </div>
         )}
 
-        <div style={{marginBottom: '1.5rem', padding: '1rem', background: 'rgba(0,0,0,0.03)', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
+        <div style={{marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
           <div>
             <div style={{color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.2rem'}}>Initial &rarr; Last Reading</div>
             <div style={{fontWeight: '600', color: 'var(--text-primary)', fontSize: '1.1rem'}}>{tenant.initialMeterReading || 0} <span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>&rarr; {tenant.lastMeterReading !== null ? tenant.lastMeterReading : (tenant.initialMeterReading || 0)}</span></div>
