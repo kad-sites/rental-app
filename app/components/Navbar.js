@@ -16,7 +16,7 @@ export default function Navbar() {
           <img src="/logo.png" width="40" height="40" alt="Logo" style={{borderRadius: '8px'}} />
           <span style={{fontSize: '1.4rem'}}>
             <span style={{color: 'var(--warning-color)', fontWeight: '400'}}>Kiraya</span>
-            <span style={{color: 'var(--primary-color)', fontWeight: '800'}}>PE</span>
+            <span style={{color: '#feab03', fontWeight: '800'}}>PE</span>
           </span>
         </a>
         
